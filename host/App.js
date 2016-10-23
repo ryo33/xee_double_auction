@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 
 import RaisedButton from 'material-ui/RaisedButton'
 import Divider from 'material-ui/Divider'
+import {Card, CardText, CardTitle } from 'material-ui/Card'
+import CircularProgress from 'material-ui/CircularProgress';
 
 import ActionDispatcher from 'components/ActionDispatcher'
 import MessageSender from 'components/MessageSender'
@@ -15,7 +17,8 @@ import ScreenMode from './ScreenMode'
 
 import { enableScreenMode } from './actions'
 
-const mapStateToProps = ({ buyerBids, sellerBids, deals, users, screenMode }) => ({
+const mapStateToProps = ({ loading, buyerBids, sellerBids, deals, users, screenMode }) => ({
+  loading,
   buyerBids,
   sellerBids,
   deals,
@@ -39,48 +42,63 @@ class App extends Component {
   }
 
   render() {
-    const { buyerBids, sellerBids, deals, users, screenMode } = this.props
-    return (
-      <span>
-        { screenMode
-          ? <ScreenMode />
-          : (
-            <div>
-              <ModeButtons />
-              <Divider
-                style={{
-                  marginTop: "5%",
-                  clear: "right"
-                }}
-              />
-              <div style={{ marginTop: "5%" }}>
-                <Users />
+    const { loading, buyerBids, sellerBids, deals, users, screenMode } = this.props
+
+    if (loading) {
+      return (
+	<Card style={{padding: '20px'}}>
+		<CardTitle title="接続中" style={{padding: '0px', marginTop: '7px', marginBottom: '14px'}}/>
+		<CardText style={{padding: '0px', margin: '0px'}}>
+			<div style={{textAlign: 'center'}}>
+				<CircularProgress style={{margin: '0px', padding: '0px' }} />
+			</div>
+    　　　		<p style={{margin: '0px', padding: '0px'}}>サーバーに接続しています。<br/>このまましばらくお待ちください。</p>
+		</CardText>
+	</Card>
+      )
+    } else {
+      return (
+        <span>
+          { screenMode
+            ? <ScreenMode />
+            : (
+              <div>
+                <ModeButtons />
+                <Divider
+                  style={{
+                    marginTop: "5%",
+                    clear: "right"
+                  }}
+                />
+                <div style={{ marginTop: "5%" }}>
+                  <Users />
+                </div>
+                <Divider
+                  style={{
+                    marginTop: "5%",
+                  }}
+                />
+                <BidsTable
+                  buyerBids={buyerBids}
+                  sellerBids={sellerBids}
+                  deals={deals}
+                />
+                <Divider
+                  style={{
+                    marginTop: "5%",
+                  }}
+                />
+                <Chart
+                  users={users}
+                /><br />
+                <MatchingButton /><br />
+                <RaisedButton onClick={this.enableScreenMode.bind(this)} primary={true} style={{ marginTop: '3%' }}>スクリーンモードに移行</RaisedButton>
               </div>
-              <Divider
-                style={{
-                  marginTop: "5%",
-                }}
-              />
-              <BidsTable
-                buyerBids={buyerBids}
-                sellerBids={sellerBids}
-                deals={deals}
-              />
-              <Divider
-                style={{
-                  marginTop: "5%",
-                }}
-              />
-              <Chart
-                users={users}
-              /><br />
-              <MatchingButton /><br />
-              <RaisedButton onClick={this.enableScreenMode.bind(this)} primary={true} style={{ marginTop: '3%' }}>スクリーンモードに移行</RaisedButton>
-            </div>
-          )
-        }
-      </span>
-    )
+            )
+          }
+        </span>
+      )
+    }
   }
 }
 
