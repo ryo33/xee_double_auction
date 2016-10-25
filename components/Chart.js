@@ -26,7 +26,7 @@ const Chart = ({users}) => {
   buyerBids.push(0 - 100)
   sellerBids.push(usersCount * 100 + 100)
   return (
-    <Card>
+    <Card initiallyExpanded={true}>
       <CardHeader
         title="市場均衡グラフ"
         actAsExpander={true}
@@ -87,4 +87,4 @@ const Chart = ({users}) => {
   )
 }
 
-export default throttle(Chart, 200)
+export default throttle(Chart, 500)

@@ -24,7 +24,7 @@ const User = ({ id, role, money, bid, bidded, dealt, deal }) => (
 const mapStateToProps = ({ users }) => ({ users })
 
 const Users = ({ users }) => (
-  <Card>
+  <Card initiallyExpanded={false}>
     <CardHeader
       title={"登録者 " + Object.keys(users).length + "人"}
       actAsExpander={true}
@@ -61,4 +61,4 @@ const Users = ({ users }) => (
   </Card>
 )
 
-export default connect(mapStateToProps)(throttle(Users, 200))
+export default connect(mapStateToProps)(throttle(Users, 500))

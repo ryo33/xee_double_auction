@@ -23,7 +23,7 @@ const Buyer = ({ money, bidded, bid, dealt, deal }) => {
         <p>あなたは買い手です。</p>
         <p>予算である{money}以下の価格で購入することができます。</p>
         {bidded
-          ? <p>{bid}で提案中です。</p>
+          ? <p>あなたは買い手として{bid}で提案中です。</p>
           : null
         }
         <BidForm />
@@ -46,7 +46,7 @@ const Seller = ({ money, bidded, bid, dealt, deal }) => {
         <p>あなたは売り手です。</p>
         <p>仕入れ値である{money}以上の価格で販売することができます。</p>
         {bidded
-          ? <p>{bid}で提案中です。</p>
+          ? <p>あなたは売り手として{bid}で提案中です。</p>
           : null
         }
         <BidForm />
@@ -57,7 +57,6 @@ const Seller = ({ money, bidded, bid, dealt, deal }) => {
 
 const Auction = ({ buyerBids, sellerBids, deals, role, money, bidded, bid, dealt, deal }) => (
   <div>
-    <h2>ダブルオークション実験</h2>
     { role == "buyer" ? <Buyer money={money} bidded={bidded} bid={bid} dealt={dealt} deal={deal} /> : null }
     { role == "seller" ? <Seller money={money} bidded={bidded} bid={bid} dealt={dealt} deal={deal} /> : null }
     { role == null ? <p>あなたは現在進行中のダブルオークションには参加していません。</p> : null }

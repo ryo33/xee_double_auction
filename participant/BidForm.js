@@ -78,7 +78,7 @@ class MatchingButton extends Component {
         >送信</RaisedButton>
         <SnackBar
           open={snack}
-          message={bid + 'で提案しました。'}
+          message={'あなたは'+ bid + 'で提案しました。'}
           autoHideDuration={3000}
           onRequestClose={this.closeSnack.bind(this)}
         />
