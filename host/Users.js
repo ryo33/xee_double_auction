@@ -36,7 +36,7 @@ const Users = ({ users }) => (
           <tr>
             <th>id</th>
             <th>役割</th>
-            <th>お金</th>
+            <th>価格</th>
             <th>状態</th>
           </tr>
         </thead>
