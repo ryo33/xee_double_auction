@@ -7,12 +7,14 @@ import SnackBar from 'material-ui/SnackBar'
 
 import { bid } from './actions'
 
+import throttleProps from 'react-throttle-render@1.1.1'
+
 const mapStateToProps = ({personal}) => ({
   role: personal.role,
   money: personal.money
 })
 
-class MatchingButton extends Component {
+class BidForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -87,4 +89,4 @@ class MatchingButton extends Component {
   }
 }
 
-export default connect(mapStateToProps)(MatchingButton)
+export default connect(mapStateToProps)(throttleProps(BidForm))
