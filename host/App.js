@@ -17,10 +17,12 @@ import ScreenMode from './ScreenMode'
 
 import { enableScreenMode } from './actions'
 
-const mapStateToProps = ({ loading, buyerBids, sellerBids, deals, users, screenMode }) => ({
+const mapStateToProps = ({ loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users, screenMode }) => ({
   loading,
   buyerBids,
   sellerBids,
+  highestBid,
+  lowestBid,
   deals,
   users,
   screenMode
@@ -42,19 +44,19 @@ class App extends Component {
   }
 
   render() {
-    const { loading, buyerBids, sellerBids, deals, users, screenMode } = this.props
+    const { loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users, screenMode } = this.props
 
     if (loading) {
       return (
-	<Card style={{padding: '20px'}}>
-		<CardTitle title="接続中" style={{padding: '0px', marginTop: '7px', marginBottom: '14px'}}/>
-		<CardText style={{padding: '0px', margin: '0px'}}>
-			<div style={{textAlign: 'center'}}>
-				<CircularProgress style={{margin: '0px', padding: '0px' }} />
-			</div>
-    　　　		<p style={{margin: '0px', padding: '0px'}}>サーバーに接続しています。<br/>このまましばらくお待ちください。</p>
-		</CardText>
-	</Card>
+        <Card style={{padding: '20px'}}>
+          <CardTitle title="接続中" style={{padding: '0px', marginTop: '7px', marginBottom: '14px'}}/>
+          <CardText style={{padding: '0px', margin: '0px'}}>
+            <div style={{textAlign: 'center'}}>
+              <CircularProgress style={{margin: '0px', padding: '0px' }} />
+            </div>
+            　　　		<p style={{margin: '0px', padding: '0px'}}>サーバーに接続しています。<br/>このまましばらくお待ちください。</p>
+          </CardText>
+        </Card>
       )
     } else {
       return (
@@ -82,6 +84,9 @@ class App extends Component {
                   buyerBids={buyerBids}
                   sellerBids={sellerBids}
                   deals={deals}
+                  highestBid={highestBid}
+                  lowestBid={lowestBid}
+                  expanded={false}
                 />
                 <Divider
                   style={{

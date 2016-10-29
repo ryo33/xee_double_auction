@@ -6,8 +6,8 @@ import Divider from 'material-ui/Divider'
 import BidsTable from 'components/BidsTable'
 import BidForm from './BidForm'
 
-const mapStateToProps = ( {personal, buyerBids, sellerBids, deals} ) =>
-Object.assign({}, personal, { buyerBids, sellerBids, deals })
+const mapStateToProps = ( {personal, buyerBids, sellerBids, deals, highestBid, lowestBid} ) =>
+Object.assign({}, personal, { buyerBids, sellerBids, deals, highestBid, lowestBid })
 
 const Buyer = ({ money, bidded, bid, dealt, deal }) => {
   if (dealt) {
@@ -55,7 +55,7 @@ const Seller = ({ money, bidded, bid, dealt, deal }) => {
   }
 }
 
-const Auction = ({ buyerBids, sellerBids, deals, role, money, bidded, bid, dealt, deal }) => (
+const Auction = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, role, money, bidded, bid, dealt, deal }) => (
   <div>
     { role == "buyer" ? <Buyer money={money} bidded={bidded} bid={bid} dealt={dealt} deal={deal} /> : null }
     { role == "seller" ? <Seller money={money} bidded={bidded} bid={bid} dealt={dealt} deal={deal} /> : null }
@@ -69,6 +69,9 @@ const Auction = ({ buyerBids, sellerBids, deals, role, money, bidded, bid, dealt
       buyerBids={buyerBids}
       sellerBids={sellerBids}
       deals={deals}
+      highestBid={highestBid}
+      lowestBid={lowestBid}
+      expanded={true}
     />
   </div>
 )

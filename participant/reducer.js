@@ -8,6 +8,8 @@ const reducer = createReducer({
   mode: 'waiting',
   buyerBids: [],
   sellerBids: [],
+  highestBid: null,
+  lowestBid: null,
   deals: [],
   personal: {
   }

@@ -16,6 +16,8 @@ const reducer = createReducer({
   buyerBids: [],
   sellerBids: [],
   deals: [],
+  highestBid: null,
+  lowestBid: null,
   screenMode: false
 })
 export default reducer

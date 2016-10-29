@@ -7,7 +7,7 @@ import SnackBar from 'material-ui/SnackBar'
 
 import { bid } from './actions'
 
-import throttleProps from 'react-throttle-render@1.1.1'
+import throttleProps from 'react-throttle-render'
 
 const mapStateToProps = ({personal}) => ({
   role: personal.role,
