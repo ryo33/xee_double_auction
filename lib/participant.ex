@@ -3,6 +3,7 @@ defmodule DoubleAuction.Participant do
 
   def filter_data(data, id) do
     rule = %{
+      user_number: "userNumber",
       mode: true,
       buyer_bids: {"buyerBids", %{
         id: true,

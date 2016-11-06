@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import Divider from 'material-ui/Divider'
 
+import DealDialog from './DealDialog'
 import BidsTable from 'components/BidsTable'
 import BidForm from './BidForm'
 
@@ -13,6 +14,11 @@ const Buyer = ({ money, bidded, bid, dealt, deal }) => {
   if (dealt) {
     return (
       <div>
+        <DealDialog 
+        deal = {deal}
+        bid = {bid}
+        profit = {money - deal}
+        />
         <p>{deal}で取引が成立しました。（あなたの提案: {bid}）</p>
         <p>利益は{money - deal}です。</p>
       </div>
@@ -36,6 +42,11 @@ const Seller = ({ money, bidded, bid, dealt, deal }) => {
   if (dealt) {
     return (
       <div>
+        <DealDialog 
+        deal = {deal}
+        bid = {bid}
+        profit = {deal - money}
+        />
         <p>{deal}で取引が成立しました。（あなたの提案: {bid}）</p>
         <p>利益は{deal - money}です。</p>
       </div>

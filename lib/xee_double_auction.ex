@@ -27,7 +27,8 @@ defmodule DoubleAuction do
        lowest_bid: nil,
        deals: [],
        started: false,
-       price_base: 100
+       price_base: 100,
+       user_number: 0
      }}}
   end
 
@@ -36,6 +37,7 @@ defmodule DoubleAuction do
       participant = %{role: nil, bidded: false, money: nil, bid: nil, dealt: false, deal: nil}
       participants = Map.put(participants, id, participant)
       new = %{data | participants: participants}
+      new = Map.update!(new, :user_number, &(&1+1))
       wrap_result(data, new)
     else
       wrap_result(data, data)

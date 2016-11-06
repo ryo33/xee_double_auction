@@ -4,10 +4,11 @@ import { connect } from 'react-redux'
 import {Card, CardActions, CardText, CardTitle } from 'material-ui/Card'
 import CircularProgress from 'material-ui/CircularProgress'
 
-const mapStateToProps = ({ users }) => ({})
+const mapStateToProps = ({ userNumber }) => ({ userNumber })
 
 class Wait extends Component {
     render() {
+        const { userNumber } = this.props
         return (
             <div>
                 <Card>
@@ -15,6 +16,7 @@ class Wait extends Component {
                     <CardText>
                         <p>参加者の登録を待っています。</p>
                         <p>この画面のまましばらくお待ち下さい。</p>
+                        <p>現在の参加者は{ userNumber }人です。</p>
                     </CardText>
                     <div style={{textAlign: "center"}}>
                         <CircularProgress size={2}/>
