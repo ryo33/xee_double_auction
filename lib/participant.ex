@@ -65,7 +65,9 @@ defmodule DoubleAuction.Participant do
 
   def remove_first(data, id, previous_bid, bid_key, key, set) do
     if previous_bid != nil do
-      data = %{data | key => List.delete(data[key], {id, previous_bid})}
+      data = %{data | key => Enum.filter(data[key], fn map ->
+        map.participant_id != id
+      end)}
       if not is_nil(data[bid_key]) and data[bid_key].participant_id == id do
         data = set.(data)
       end
