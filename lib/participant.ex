@@ -43,8 +43,9 @@ defmodule DoubleAuction.Participant do
       # Seller
       %{role: "seller", bidded: bidded, bid: previous_bid, money: money, dealt: false} when not is_nil(money) and bid >= money ->
         data = remove_first(data, id, previous_bid, :lowest_bid, :seller_bids, &set_lowest_bid/1)
+                |> update_bid(id, bid)
         if not is_nil(data.highest_bid) and bid <= data.highest_bid.bid do
-          deal(data, :highest_bid, :buyer_bids, id, bid, previous_bid, &set_highest_bid/1)
+          deal(data, :highest_bid, :buyer_bids, id, bid, &set_highest_bid/1)
         else
           bid(data, :lowest_bid, :seller_bids, id, bid, previous_bid, "NEW_SELLER_BIDS", fn most_bid, bid ->
             bid < most_bid
@@ -53,8 +54,9 @@ defmodule DoubleAuction.Participant do
       # Buyer
       %{role: "buyer", bidded: bidded, bid: previous_bid, money: money, dealt: false} when not is_nil(money) and bid <= money ->
         data = remove_first(data, id, previous_bid, :highest_bid, :buyer_bids, &set_highest_bid/1)
+                |> update_bid(id, bid)
         if not is_nil(data.lowest_bid) and bid >= data.lowest_bid.bid do
-          deal(data, :lowest_bid, :seller_bids, id, bid, previous_bid, &set_lowest_bid/1)
+          deal(data, :lowest_bid, :seller_bids, id, bid, &set_lowest_bid/1)
         else
           bid(data, :highest_bid, :buyer_bids, id, bid, previous_bid, "NEW_BUYER_BIDS", fn most_bid, bid ->
             bid > most_bid
@@ -62,6 +64,12 @@ defmodule DoubleAuction.Participant do
         end
     end
     data
+  end
+
+  defp update_bid(data, id, bid) do
+    update_in(data, [:participants, id], fn participant ->
+      %{participant | bidded: true, bid: bid}
+    end)
   end
 
   def remove_first(data, id, previous_bid, bid_key, key, set) do
@@ -85,9 +93,6 @@ defmodule DoubleAuction.Participant do
       data[bid_key]
     end
     data = %{data | key => bids, bid_key => most_bid}
-    data = update_in(data, [:participants, id], fn participant ->
-      %{participant | bidded: true, bid: bid}
-    end)
     data
     |> Map.update!(:counter, fn x -> x + 1 end)
   end
@@ -100,13 +105,13 @@ defmodule DoubleAuction.Participant do
     }
   end
 
-  def deal(data, bid_key, partner_key, id, bid, previous_bid, set) do
+  def deal(data, bid_key, partner_key, id, bid, set) do
     now = DateTime.today()
     id2 = data[bid_key].participant_id
     deals = [new_deal(data.counter, bid, id, id2, now) | data.deals]
     bids = List.delete(data[partner_key], data[bid_key])
     data = %{data | :deals => deals, partner_key => bids}
-           |> dealt(id, id2, bid)
+           |> dealt(id, id2, data[bid_key].bid)
            |> Map.update!(:counter, fn x -> x + 1 end)
     data = set.(data)
     data
@@ -125,7 +130,7 @@ defmodule DoubleAuction.Participant do
   def dealt(data, id1, id2, money) do
     data
     |> update_in([:participants, id1], fn participant ->
-          %{participant | bidded: false, bid: money, dealt: true, deal: money}
+          %{participant | bidded: false, dealt: true, deal: money}
     end)
     |> update_in([:participants, id2], fn participant ->
           %{participant | bidded: false, dealt: true, deal: money}
