@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import keydown, { Keys } from 'react-keydown'
 
 import RaisedButton from 'material-ui/RaisedButton'
 import Divider from 'material-ui/Divider'
@@ -28,10 +29,22 @@ const mapStateToProps = ({ loading, buyerBids, sellerBids, deals, highestBid, lo
   screenMode
 })
 
+const { ESC } = Keys
+
 class App extends Component {
   constructor(props, context) {
     super(props, context)
-    this.state = {}
+    this.state = {
+      screenMode: false
+    }
+  }
+
+  componentWillReceiveProps( { keydown } ) {
+    if (keydown.event && keydown.event.which == ESC) {
+      this.setState({
+        screenMode: false
+      })
+    }
   }
 
   componentDidMount() {
@@ -39,12 +52,14 @@ class App extends Component {
   }
 
   enableScreenMode() {
-    const { dispatch } = this.props
-    dispatch(enableScreenMode())
+    Materialize.toast('ScreenModeを終了するにはESCキーを押してください。', 4000, 'rounded')
+    this.setState({
+      screenMode: true
+    })
   }
 
   render() {
-    const { loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users, screenMode } = this.props
+    const { loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users } = this.props
 
     if (loading) {
       return (
@@ -61,7 +76,7 @@ class App extends Component {
     } else {
       return (
         <span>
-          { screenMode
+          { this.state.screenMode
             ? <ScreenMode />
             : (
               <div>
@@ -107,4 +122,4 @@ class App extends Component {
   }
 }
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps)(keydown(App))
