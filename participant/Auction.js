@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card'
+
 import Divider from 'material-ui/Divider'
 
 import DealDialog from './DealDialog'
@@ -26,13 +28,13 @@ const Buyer = ({ money, bidded, bid, dealt, deal }) => {
   } else {
     return (
       <div>
-        <p>あなたは買い手です。</p>
-        <p>予算である{money}以下の価格で購入することができます。</p>
-        {bidded
-          ? <p>あなたは買い手として{bid}で提案中です。</p>
-          : null
-        }
-        <BidForm />
+            <p>あなたは買い手です。</p>
+            <p>予算である{money}以下の価格で購入することができます。</p>
+            {bidded
+              ? <p>あなたは買い手として{bid}で提案中です。</p>
+              : null
+            }
+            <BidForm />
       </div>
     )
   }
@@ -68,9 +70,13 @@ const Seller = ({ money, bidded, bid, dealt, deal }) => {
 
 const Auction = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, role, money, bidded, bid, dealt, deal }) => (
   <div>
+    <Card>
+    <CardText>
     { role == "buyer" ? <Buyer money={money} bidded={bidded} bid={bid} dealt={dealt} deal={deal} /> : null }
     { role == "seller" ? <Seller money={money} bidded={bidded} bid={bid} dealt={dealt} deal={deal} /> : null }
     { role == null ? <p>あなたは現在進行中のダブルオークションには参加していません。</p> : null }
+    </CardText>
+    </Card>
     <Divider
         style={{
             marginTop: "5%",

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card'
+
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
 import SnackBar from 'material-ui/SnackBar'
@@ -21,7 +23,8 @@ class BidForm extends Component {
       value: '',
       isValid: false,
       snack: false,
-      bid: ''
+      bid: '',
+      errorText: ''
     }
   }
 
@@ -42,6 +45,17 @@ class BidForm extends Component {
       value,
       isValid
     })
+    if (!isValid && (isNaN(numValue) || numValue <= 0) && value != ''){
+      this.setState({ errorText: '正の整数を入力してください'})
+    }else if(!isValid && !isNaN(numValue) && value != ''){
+      if(role == "buyer"){
+        this.setState({ errorText: '予算以下の価格で提案して下さい'})
+      }else{
+        this.setState({ errorText: '仕入れ値以上の価格で提案して下さい'})
+      }
+    }else{
+      this.setState({ errorText: ''})
+    }
   }
 
   handleClick() {
@@ -67,16 +81,18 @@ class BidForm extends Component {
     const { value, bid, snack, isValid } = this.state
     return (
       <div>
-        <TextField
-          floatingLabelText='提案金額'
-          value={value}
-          onChange={this.handleChange.bind(this)}
-          onKeyDown={this.handleKeyDown.bind(this)}
-        /><br />
+          <TextField
+            value={value}
+            errorText = {this.state.errorText}
+            floatingLabelText='提案金額'
+            onChange={this.handleChange.bind(this)}
+            onKeyDown={this.handleKeyDown.bind(this)}
+          /><br/>
         <RaisedButton
           primary={true}
           disabled={!isValid}
           onClick={this.handleClick.bind(this)}
+          style={{marginTop: 18}}
         >送信</RaisedButton>
         <SnackBar
           open={snack}
