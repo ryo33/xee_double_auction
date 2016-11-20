@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 
+import debounce from 'lodash.debounce'
+
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card'
 
 import TextField from 'material-ui/TextField'
@@ -27,6 +29,7 @@ class BidForm extends Component {
       bid: '',
       errorText: ''
     }
+    this.setErrorText = debounce(this.setErrorText, 500)
   }
 
   closeSnack() {
@@ -40,22 +43,31 @@ class BidForm extends Component {
     const { role, money } = this.props
     const numValue = parseInt(value, 10)
     const isValid = role == "buyer"
-      ? numValue <= money
+      ? numValue <= money && numValue > 0
       : numValue >= money
+
     this.setState({
       value,
       isValid
     })
-    if (!isValid && (isNaN(numValue) || numValue <= 0) && value != ''){
+
+    if (isValid || value == '') {
+      this.setErrorText.cancel()
+      this.setState({ errorText: '' })
+    } else {
+      this.setErrorText(role, numValue)
+    }
+  }
+
+  setErrorText(role, numValue) {
+    if (isNaN(numValue)) {
       this.setState({ errorText: '正の整数を入力してください'})
-    }else if(!isValid && !isNaN(numValue) && value != ''){
-      if(role == "buyer"){
+    } else {
+      if (role == "buyer") {
         this.setState({ errorText: '予算以下の価格で提案して下さい'})
-      }else{
+      } else {
         this.setState({ errorText: '仕入れ値以上の価格で提案して下さい'})
       }
-    }else{
-      this.setState({ errorText: ''})
     }
   }
 
