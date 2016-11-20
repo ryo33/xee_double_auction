@@ -1,19 +1,30 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { Card, CardTitle, CardAction, CardText } from 'material-ui/Card'
+import BidsTable from 'components/BidsTable'
+import Chart from 'components/Chart'
 
-const mapStateToProps = ({}) => ({})
+const mapStateToProps = ({ buyerBids, sellerBids, deals, users }) => ({
+  buyerBids,
+  sellerBids,
+  deals,
+  users
+})
 
 class Result extends Component {
     render() {
+      const {buyerBids, sellerBids, deals, users} = this.props
         return (
-            <Card>
-                <CardTitle title="ダブルオークション実験" subtitle="結果"/>
-                <CardText>
-                    <p>スクリーンをご覧ください。</p>
-                </CardText>
-            </Card>
+          <div>
+            <BidsTable
+              buyerBids={buyerBids}
+              sellerBids={sellerBids}
+              deals={deals}
+            />
+            <Chart
+              users={users}
+            />
+          </div>
         )
     }
 }

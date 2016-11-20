@@ -2,6 +2,14 @@ defmodule DoubleAuction.Participant do
   use Timex
 
   def filter_data(data, id) do
+    participants_rule = if data.mode == "result" do
+      "users"
+    else
+      {"personal", %{
+        id => true,
+        :_spread => [[id]]
+      }}
+    end
     rule = %{
       user_number: "userNumber",
       mode: true,
@@ -19,10 +27,7 @@ defmodule DoubleAuction.Participant do
       },
       highest_bid: "highestBid",
       lowest_bid: "lowestBid",
-      participants: {"personal", %{
-        id => true,
-        :_spread => [[id]]
-      }},
+      participants: participants_rule,
     }
     data
     |> Transmap.transform(rule)
