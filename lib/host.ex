@@ -3,18 +3,9 @@ defmodule DoubleAuction.Host do
     rule = %{
       mode: true,
       participants: "users",
-      buyer_bids: {"buyerBids", %{
-        id: true,
-        bid: true,
-      }},
-      seller_bids: {"sellerBids", %{
-        id: true,
-        bid: true,
-      }},
-      deals: %{
-        id: true,
-        deal: true,
-      },
+      buyer_bids: {"buyerBids", true},
+      seller_bids: {"sellerBids", true},
+      deals: true,
       highest_bid: "highestBid",
       lowest_bid: "lowestBid",
       highest_bid: "highestBid",

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import throttle from 'react-throttle-render'
 
+import clone from 'clone'
+
 import { Card, CardHeader, CardText } from 'material-ui/Card'
 
 const BidsTable = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, expanded }) => {
@@ -15,8 +17,9 @@ const BidsTable = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, expand
       return value
     }
   }
-  buyerBids = buyerBids.sort((a, b) => b.bid - a.bid)
-  sellerBids = sellerBids.sort((a, b) => a.bid - b.bid)
+
+  buyerBids = clone(buyerBids).sort((a, b) => b.bid - a.bid)
+  sellerBids = clone(sellerBids).sort((a, b) => a.bid - b.bid)
 
   function get(map, key) {
     return map ? map[key] : null

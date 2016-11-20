@@ -1,5 +1,6 @@
 defmodule DoubleAuction.Participant do
   use Timex
+  require Logger
 
   def filter_data(data, id) do
     participants_rule = if data.mode == "result" do
@@ -13,18 +14,9 @@ defmodule DoubleAuction.Participant do
     rule = %{
       user_number: "userNumber",
       mode: true,
-      buyer_bids: {"buyerBids", %{
-        id: true,
-        bid: true,
-      }},
-      seller_bids: {"sellerBids", %{
-        id: true,
-        bid: true,
-      }},
-      deals: %{
-        id: true,
-        deal: true,
-      },
+      buyer_bids: {"buyerBids", true},
+      seller_bids: {"sellerBids", true},
+      deals: true,
       highest_bid: "highestBid",
       lowest_bid: "lowestBid",
       participants: participants_rule,
