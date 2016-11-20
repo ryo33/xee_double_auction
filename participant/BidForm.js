@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card'
@@ -81,13 +82,14 @@ class BidForm extends Component {
     const { value, bid, snack, isValid } = this.state
     return (
       <div>
-          <TextField
-            value={value}
-            errorText = {this.state.errorText}
-            floatingLabelText='提案金額'
-            onChange={this.handleChange.bind(this)}
-            onKeyDown={this.handleKeyDown.bind(this)}
-          /><br/>
+        <TextField
+          autoFocus
+          value={value}
+          errorText = {this.state.errorText}
+          floatingLabelText='提案金額'
+          onChange={this.handleChange.bind(this)}
+          onKeyDown={this.handleKeyDown.bind(this)}
+        /><br/>
         <RaisedButton
           primary={true}
           disabled={!isValid}
