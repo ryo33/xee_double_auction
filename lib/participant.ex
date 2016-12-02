@@ -42,7 +42,7 @@ defmodule DoubleAuction.Participant do
         data = remove_first(data, id, previous_bid, :lowest_bid, :seller_bids, &set_lowest_bid/1)
                 |> update_bid(id, bid)
         if not is_nil(data.highest_bid) and bid <= data.highest_bid.bid do
-          deal(data, :highest_bid, :buyer_bids, id, bid, &set_highest_bid/1)
+          deal(data, :highest_bid, :buyer_bids, id, data.highest_bid.bid, &set_highest_bid/1)
         else
           bid(data, :lowest_bid, :seller_bids, id, bid, previous_bid, "NEW_SELLER_BIDS", fn most_bid, bid ->
             bid < most_bid
@@ -53,7 +53,7 @@ defmodule DoubleAuction.Participant do
         data = remove_first(data, id, previous_bid, :highest_bid, :buyer_bids, &set_highest_bid/1)
                 |> update_bid(id, bid)
         if not is_nil(data.lowest_bid) and bid >= data.lowest_bid.bid do
-          deal(data, :lowest_bid, :seller_bids, id, bid, &set_lowest_bid/1)
+          deal(data, :lowest_bid, :seller_bids, id, data.lowest_bid.bid, &set_lowest_bid/1)
         else
           bid(data, :highest_bid, :buyer_bids, id, bid, previous_bid, "NEW_BUYER_BIDS", fn most_bid, bid ->
             bid > most_bid
