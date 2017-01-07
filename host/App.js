@@ -132,6 +132,16 @@ class App extends Component {
                       ...(Object.keys(users).map(id => {
                         const user = users[id]
                         return [id, user.role, user.bid, user.deal]
+                      })),
+                      [],
+                      ["Deal", "ID1", "ID2", "time"],
+                      ...(deals.map(deal => {
+                        return [
+                          deal.deal,
+                          deal.participant_id,
+                          deal.participant_id2,
+                          deal.time,
+                        ]
                       }))
                     ]}
                     style={{marginLeft: '2%'}}

@@ -103,7 +103,7 @@ defmodule DoubleAuction.Participant do
   end
 
   def deal(data, bid_key, partner_key, id, bid, set) do
-    now = DateTime.today()
+    now = Timex.format!(Timex.now(), "{ISO:Extended}")
     id2 = data[bid_key].participant_id
     deals = [new_deal(data.counter, bid, id, id2, now) | data.deals]
     bids = List.delete(data[partner_key], data[bid_key])
