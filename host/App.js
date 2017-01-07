@@ -10,15 +10,18 @@ import CircularProgress from 'material-ui/CircularProgress';
 import ActionDispatcher from 'components/ActionDispatcher'
 import MessageSender from 'components/MessageSender'
 import Chart from 'components/Chart'
-import ModeButtons from './ModeButtons'
-import MatchingButton from './MatchingButton'
 import BidsTable from 'components/BidsTable'
+import ModeButtons from './ModeButtons'
 import Users from './Users'
 import ScreenMode from './ScreenMode'
+import SettingButton from './SettingButton'
+import EditButton from './EditButton.js'
+import DownloadButton from './DownloadButton'
 
 import { enableScreenMode } from './actions'
 
-const mapStateToProps = ({ loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users, screenMode }) => ({
+const mapStateToProps = ({ mode, loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users, screenMode }) => ({
+  mode,
   loading,
   buyerBids,
   sellerBids,
@@ -39,11 +42,19 @@ class App extends Component {
     }
   }
 
-  componentWillReceiveProps( { keydown } ) {
+  componentWillReceiveProps({ keydown, mode: nextMode }) {
     if (keydown.event && keydown.event.which == ESC) {
       this.setState({
         screenMode: false
       })
+    }
+    if (this.props.mode !== nextMode) {
+      if(nextMode === 'result') {
+        Materialize.toast('ScreenModeを終了するにはESCキーを押してください。', 4000, 'rounded')
+        this.setState({
+          screenMode: true
+        })
+      }
     }
   }
 
@@ -51,15 +62,8 @@ class App extends Component {
     sendData("fetch_contents")
   }
 
-  enableScreenMode() {
-    Materialize.toast('ScreenModeを終了するにはESCキーを押してください。', 4000, 'rounded')
-    this.setState({
-      screenMode: true
-    })
-  }
-
   render() {
-    const { loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users } = this.props
+    const { mode, loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users } = this.props
 
     if (loading) {
       return (
@@ -77,44 +81,64 @@ class App extends Component {
       return (
         <span>
           { this.state.screenMode
-            ? <ScreenMode />
-            : (
-              <div>
-                <ModeButtons />
-                <Divider
-                  style={{
-                    marginTop: "5%",
-                    clear: "right"
-                  }}
-                />
-                <div style={{ marginTop: "5%" }}>
-                  <Users />
+              ? <ScreenMode />
+              : (
+                <div>
+                  <ModeButtons />
+                  <Divider
+                    style={{
+                      marginTop: "5%",
+                      clear: "right"
+                    }}
+                  />
+                  <div style={{ marginTop: "5%" }}>
+                    <Users />
+                  </div>
+                  <Divider
+                    style={{
+                      marginTop: "5%",
+                    }}
+                  />
+                  <BidsTable
+                    buyerBids={buyerBids}
+                    sellerBids={sellerBids}
+                    deals={deals}
+                    highestBid={highestBid}
+                    lowestBid={lowestBid}
+                    expanded={false}
+                  />
+                  <Divider
+                    style={{
+                      marginTop: "5%",
+                    }}
+                  />
+                  <Chart
+                    users={users}
+                  /><br />
+                  <SettingButton
+                    disabled={true}
+                  />
+                  <EditButton
+                    style={{marginLeft: "2%"}}
+                    disabled={true}
+                  />
+                  <DownloadButton
+                    fileName={"double_auction.csv"}
+                    list={[
+                      ["Double Auction"],
+                      ["Date and time", new Date()],
+                      ["The number of participants", Object.keys(users).length],
+                      ["ID", "Role", "Bit", "Deal"],
+                      ...(Object.keys(users).map(id => {
+                        const user = users[id]
+                        return [id, user.role, user.bid, user.deal]
+                      }))
+                    ]}
+                    style={{marginLeft: '2%'}}
+                    disabled={mode != "result"}
+                  />
                 </div>
-                <Divider
-                  style={{
-                    marginTop: "5%",
-                  }}
-                />
-                <BidsTable
-                  buyerBids={buyerBids}
-                  sellerBids={sellerBids}
-                  deals={deals}
-                  highestBid={highestBid}
-                  lowestBid={lowestBid}
-                  expanded={false}
-                />
-                <Divider
-                  style={{
-                    marginTop: "5%",
-                  }}
-                />
-                <Chart
-                  users={users}
-                /><br />
-                <MatchingButton /><br />
-                <RaisedButton onClick={this.enableScreenMode.bind(this)} primary={true} style={{ marginTop: '3%' }}>スクリーンモードに移行</RaisedButton>
-              </div>
-            )
+              )
           }
         </span>
       )
