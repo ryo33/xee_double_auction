@@ -128,10 +128,10 @@ class App extends Component {
                       ["Double Auction"],
                       ["Date and time", new Date()],
                       ["The number of participants", Object.keys(users).length],
-                      ["ID", "Role", "Bit", "Deal"],
+                      ["ID", "Role", "Money", "Bit", "Deal"],
                       ...(Object.keys(users).map(id => {
                         const user = users[id]
-                        return [id, user.role, user.bid, user.deal]
+                        return [id, user.role, user.money, user.bid, user.deal]
                       })),
                       [],
                       ["Deal", "ID1", "ID2", "time"],
