@@ -5,10 +5,11 @@ import throttle from 'react-throttle-render'
 import { Card, CardHeader, CardText } from 'material-ui/Card'
 
 import { getRole } from 'util/index'
+import { openParticipantPage } from 'host/actions'
 
-const User = ({ id, role, money, bid, bidded, dealt, deal }) => (
+const User = ({ id, role, money, bid, bidded, dealt, deal, openParticipantPage }) => (
   <tr>
-    <td>{id}</td>
+    <td><a onClick={openParticipantPage}>{id}</a></td>
     <td>{getRole(role)}</td>
     <td>{money}</td>
     <td>{
@@ -22,8 +23,11 @@ const User = ({ id, role, money, bid, bidded, dealt, deal }) => (
 )
 
 const mapStateToProps = ({ users }) => ({ users })
+const actionCreators = {
+  openParticipantPage
+}
 
-const Users = ({ users }) => (
+const Users = ({ users, openParticipantPage }) => (
   <Card initiallyExpanded={false}>
     <CardHeader
       title={"登録者 " + Object.keys(users).length + "人"}
@@ -52,6 +56,9 @@ const Users = ({ users }) => (
                 bidded={users[id].bidded}
                 dealt={users[id].dealt}
                 deal={users[id].deal}
+                openParticipantPage={
+                  () => openParticipantPage(id)
+                }
               />
               ))
           }
@@ -61,4 +68,4 @@ const Users = ({ users }) => (
   </Card>
 )
 
-export default connect(mapStateToProps)(throttle(Users, 500))
+export default connect(mapStateToProps, actionCreators)(throttle(Users, 500))

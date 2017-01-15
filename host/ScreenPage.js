@@ -11,7 +11,7 @@ const mapStateToProps = ({ buyerBids, sellerBids, deals, users }) => ({
   users
 })
 
-const ScreenMode = ({ buyerBids, sellerBids, deals, users }) => (
+const ScreenPage = ({ buyerBids, sellerBids, deals, users }) => (
   <div>
     <BidsTable
       buyerBids={buyerBids}
@@ -24,4 +24,4 @@ const ScreenMode = ({ buyerBids, sellerBids, deals, users }) => (
   </div>
 )
 
-export default connect(mapStateToProps)(ScreenMode)
+export default connect(mapStateToProps)(ScreenPage)

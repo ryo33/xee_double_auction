@@ -1,4 +1,4 @@
-export function getMode(mode) {
+export function getPage(mode) {
   switch(mode) {
     case 'wait':
       return '待機'
