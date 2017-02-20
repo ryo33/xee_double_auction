@@ -15,10 +15,10 @@ const Chart = ({users}) => {
     if (user.bidded || user.dealt) {
       if (user.role == "buyer") {
         if (user.dealt) consumerSurplus += user.money - user.deal
-        buyerBids.push(user.bid)
+        buyerBids.push(user.money)
       } else {
         if (user.dealt) producerSurplus += user.deal - user.money
-        sellerBids.push(user.bid)
+        sellerBids.push(user.money)
       }
     }
   }
