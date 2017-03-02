@@ -91,7 +91,7 @@ const Chart = ({users, deals, expanded}) => {
                 rotation: 0,
                 y: 15,
                 x: 10,
-                text: '理論的な均衡取引数量(' + (usersCount / 4) + ')'
+                text: '理論的な均衡取引数量(' + (Math.floor(usersCount / 4)) + ')'
             },
             zIndex: 99
             }]
@@ -142,7 +142,7 @@ const Chart = ({users, deals, expanded}) => {
                 y: 15,
                 x: -10,
                 align: 'right',
-                text: '理論的な均衡取引数量(' + (usersCount / 4) + ')'
+                text: '理論的な均衡取引数量(' + (Math.floor(usersCount / 4)) + ')'
               },
               zIndex: 99
             }]
