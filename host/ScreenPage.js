@@ -20,6 +20,8 @@ const ScreenPage = ({ buyerBids, sellerBids, deals, users }) => (
     />
     <Chart
       users={users}
+      deals={deals}
+      expanded={true}
     />
   </div>
 )

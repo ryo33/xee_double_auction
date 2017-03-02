@@ -150,6 +150,8 @@ class App extends Component {
           />
           <Chart
             users={users}
+            deals={deals}
+            expanded={false}
           />
           <Dialog
             title={"オプション"}

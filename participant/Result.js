@@ -23,6 +23,8 @@ class Result extends Component {
             />
             <Chart
               users={users}
+              deals={deals}
+              expanded={true}
             />
           </div>
         )

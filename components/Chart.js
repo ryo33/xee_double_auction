@@ -4,9 +4,9 @@ import throttle from 'react-throttle-render'
 import { Card, CardHeader, CardText } from 'material-ui/Card'
 import Highcharts from 'react-highcharts'
 
-const Chart = ({users}) => {
+const Chart = ({users, deals, expanded}) => {
   const usersCount = Object.keys(users).length
-  const buyerBids = [], sellerBids = []
+  const buyerBids = [], sellerBids = [], dealtlog = []
   let consumerSurplus = 0
   let producerSurplus = 0
   let totalSurplus = 0
@@ -22,20 +22,29 @@ const Chart = ({users}) => {
       }
     }
   }
+
+  function get(map, key) {
+    return map ? map[key] : null
+  }
+
+  const dealtCount = Object.keys(deals).length
+  dealtlog.push(0)
+  for (let i = 0; i <= dealtCount; i ++) {
+    dealtlog.push(get(deals[i], 'deal'))
+  }
+
   totalSurplus = consumerSurplus + producerSurplus
   buyerBids.push(0 - 100)
   sellerBids.push(usersCount * 100 + 100)
   return (
-    <Card initiallyExpanded={true}>
+    <Card initiallyExpanded={expanded}>
       <CardHeader
-        title="市場均衡グラフ"
+        title="結果グラフ"
         actAsExpander={true}
         showExpandableButton={true}
       />
       <CardText expandable={true}>
-        <p>消費者余剰：{consumerSurplus}</p>
-        <p>生産者余剰：{producerSurplus}</p>
-        <p>総余剰：{totalSurplus}</p>
+        <p>消費者余剰：{consumerSurplus}, 生産者余剰：{producerSurplus}, 総余剰：{totalSurplus}</p>
         <Highcharts config={{
           chart: {
             type: 'area',
@@ -43,7 +52,7 @@ const Chart = ({users}) => {
             inverted: true
           },
           title: {
-            text: null
+            text: "需要・供給曲線"
           },
           xAxis: {
             title: {
@@ -52,7 +61,19 @@ const Chart = ({users}) => {
             min: 0,
             max: usersCount * 100,
             tickInterval: 100,
-            reversed: false
+            reversed: false,
+            plotLines: [{
+              color: 'black',
+              dashStyle: 'dot',
+              width: 2,
+              value: usersCount * 50 + 50,
+              label: {
+                align: 'right',
+                x: -10,
+                text: '理論的な均衡価格(' + (usersCount * 50) + '～' + (usersCount * 50 + 100) + ')'
+              },
+              zIndex: 99
+            }]
           },
           yAxis: {
             title: {
@@ -60,7 +81,20 @@ const Chart = ({users}) => {
             },
             min: 0,
             max: usersCount / 2,
-            tickInterval: 1
+            tickInterval: 1,
+            plotLines: [{
+              color: 'black',
+              dashStyle: 'dot',
+              width: 2,
+              value: usersCount / 4,
+              label: {
+                rotation: 0,
+                y: 15,
+                x: 10,
+                text: '理論的な均衡取引数量(' + (usersCount / 4) + ')'
+            },
+            zIndex: 99
+            }]
           },
           plotOptions: {
             area: {
@@ -80,6 +114,72 @@ const Chart = ({users}) => {
             name: '供給',
             step: 'left',
             data: sellerBids.sort((a, b) => a - b).map((x, y) => [x, y + 1])
+          }]
+        }} />
+        <Highcharts config={{
+          chart: {
+            animation: false,
+            inverted: false
+          },
+          title: {
+            text: "成立価格の推移"
+          },
+          xAxis: {
+            title: {
+              text: '成立順'
+            },
+            min: 1,
+            max: dealtCount + 2,
+            tickInterval: 1,
+            reversed: false,
+            plotLines: [{
+              color: 'black',
+              dashStyle: 'dot',
+              width: 2,
+              value: usersCount / 4,
+              label: {
+                rotation: 0,
+                y: 15,
+                x: -10,
+                align: 'right',
+                text: '理論的な均衡取引数量(' + (usersCount / 4) + ')'
+              },
+              zIndex: 99
+            }]
+          },
+          yAxis: {
+            title: {
+              text: '価格'
+            },
+            min: 0,
+            max: usersCount * 100,
+            tickInterval: 100,
+            plotLines: [{
+              color: 'black',
+              dashStyle: 'dot',
+              width: 2,
+              value: usersCount * 50 + 50,
+              label: {
+                align: 'right',
+                x: -10,
+                text: '理論的な均衡価格(' + (usersCount * 50) + '～' + (usersCount * 50 + 100) + ')'
+              },
+              zIndex: 99
+            }]
+          },
+          plotOptions: {
+            area: {
+              fillOpacity: 0.5,
+              marker: {
+                enabled: false
+              }
+            }
+          },
+          series: [{
+            type: 'area',
+            animation: false,
+            name: '成立価格',
+            data: dealtlog
           }]
         }} />
     </CardText>
