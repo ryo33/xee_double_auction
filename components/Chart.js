@@ -86,7 +86,7 @@ const Chart = ({users, deals, expanded}) => {
               color: 'black',
               dashStyle: 'dot',
               width: 2,
-              value: usersCount / 4,
+              value: (Math.floor(usersCount / 4)),
               label: {
                 rotation: 0,
                 y: 15,
@@ -136,7 +136,7 @@ const Chart = ({users, deals, expanded}) => {
               color: 'black',
               dashStyle: 'dot',
               width: 2,
-              value: usersCount / 4,
+              value: (Math.floor(usersCount / 4)),
               label: {
                 rotation: 0,
                 y: 15,
