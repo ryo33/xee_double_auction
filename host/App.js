@@ -53,6 +53,9 @@ class App extends Component {
     this.handleCloseEdit = () => this.setState({
       edit: false
     })
+    this.handleCloseScreenPage = () => this.setState({
+      screenPage: false
+    })
     this.handleChangePage = this.handleChangePage.bind(this)
     this.handleDownload = this.handleDownload.bind(this)
   }
@@ -96,7 +99,7 @@ class App extends Component {
     }
     if (this.props.mode !== nextPage) {
       if(nextPage === 'result') {
-        Materialize.toast('ScreenPageを終了するにはESCキーを押してください。', 5000, 'rounded')
+        Materialize.toast('ESCキーを押すと管理者画面に戻ります。', 5000, 'rounded')
         this.setState({
           screenPage: true
         })
@@ -111,7 +114,18 @@ class App extends Component {
   render() {
     const { mode, loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users } = this.props
     if (this.state.screenPage) {
-      return <ScreenPage />
+      return (
+        <div>
+          <ScreenPage />
+          <RaisedButton
+            label={"管理者画面へ"}
+            onTouchTap={this.handleCloseScreenPage}
+            style={{
+              marginTop: "5%",
+            }}
+          />
+        </div>
+      )
     } else {
       return (
         <HostPage
