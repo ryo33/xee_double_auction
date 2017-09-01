@@ -28,11 +28,9 @@ const Chart = ({users, deals, expanded}) => {
   }
 
   const dealtCount = Object.keys(deals).length
-  dealtlog.push(0)
   for (let i = 0; i <= dealtCount; i ++) {
     dealtlog.push(get(deals[i], 'deal'))
   }
-
   totalSurplus = consumerSurplus + producerSurplus
   buyerBids.push(0 - 100)
   sellerBids.push(usersCount * 100 + 100)
@@ -179,7 +177,7 @@ const Chart = ({users, deals, expanded}) => {
             type: 'area',
             animation: false,
             name: '成立価格',
-            data: dealtlog
+            data: dealtlog.reverse()
           }]
         }} />
     </CardText>
