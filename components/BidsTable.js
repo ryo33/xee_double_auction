@@ -5,6 +5,8 @@ import clone from 'clone'
 
 import { Card, CardHeader, CardText } from 'material-ui/Card'
 
+import { ReadJSON, InsertVariable, LineBreak } from '../util/ReadJSON'
+
 const BidsTable = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, expanded }) => {
   const rows = []
   const length = Math.max.apply(null, [buyerBids, sellerBids, deals].map(a => a.length))
@@ -39,8 +41,7 @@ const BidsTable = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, expand
     >
       <CardHeader
         title={
-          <span>買い手：{buyerBids.length}人、売り手：{sellerBids.length}人、成立済み：{deals.length}件<br />
-          買い手最高値：{maxValue}、売り手最安値：{minValue}</span>
+          <span>{LineBreak(InsertVariable(ReadJSON().static_text["table_title"], { buyer_num: buyerBids.length, seller_num: sellerBids.length, deals_num: deals.length, max_value: maxValue, min_value: minValue}))}</span>
         }
         actAsExpander={true}
         showExpandableButton={true}
@@ -49,9 +50,9 @@ const BidsTable = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, expand
         <table>
           <thead>
             <tr>
-              <th>買値</th>
-              <th>売値</th>
-              <th>成立価格</th>
+              <th>{ReadJSON().static_text["buy_price"]}</th>
+              <th>{ReadJSON().static_text["sell_price"]}</th>
+              <th>{ReadJSON().static_text["success_price"]}</th>
             </tr>
           </thead>
           <tbody>

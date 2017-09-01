@@ -7,6 +7,8 @@ import { Card, CardHeader, CardText } from 'material-ui/Card'
 import { getRole } from 'util/index'
 import { openParticipantPage } from 'host/actions'
 
+import { ReadJSON, InsertVariable } from '../util/ReadJSON'
+
 const User = ({ id, role, money, bid, bidded, dealt, deal, openParticipantPage }) => (
   <tr>
     <td><a onClick={openParticipantPage}>{id}</a></td>
@@ -14,10 +16,10 @@ const User = ({ id, role, money, bid, bidded, dealt, deal, openParticipantPage }
     <td>{money}</td>
     <td>{
       dealt
-        ? deal + "で成立"
+        ? InsertVariable(ReadJSON().static_text["success"], { deal: deal })
         : bidded
-          ? bid + "を入札"
-          : "未入札"
+          ? InsertVariable(ReadJSON().static_text["bid"], { bid: bid })
+          : ReadJSON().static_text["yet"]
     }</td>
   </tr>
 )
@@ -30,7 +32,7 @@ const actionCreators = {
 const Users = ({ users, openParticipantPage }) => (
   <Card initiallyExpanded={false}>
     <CardHeader
-      title={"登録者 " + Object.keys(users).length + "人"}
+      title={InsertVariable(ReadJSON().static_text["registrant_num"], {number: Object.keys(users).length })}
       actAsExpander={true}
       showExpandableButton={true}
     />
@@ -38,10 +40,10 @@ const Users = ({ users, openParticipantPage }) => (
       <table>
         <thead>
           <tr>
-            <th>id</th>
-            <th>役割</th>
-            <th>価格</th>
-            <th>状態</th>
+            <th>{ReadJSON().static_text["id"]}</th>
+            <th>{ReadJSON().static_text["role"]}</th>
+            <th>{ReadJSON().static_text["price"]}</th>
+            <th>{ReadJSON().static_text["state"]}</th>
           </tr>
         </thead>
         <tbody>

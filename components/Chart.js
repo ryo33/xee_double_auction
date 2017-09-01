@@ -4,6 +4,8 @@ import throttle from 'react-throttle-render'
 import { Card, CardHeader, CardText } from 'material-ui/Card'
 import Highcharts from 'react-highcharts'
 
+import { ReadJSON, InsertVariable } from '../util/ReadJSON'
+
 const Chart = ({users, deals, expanded}) => {
   const usersCount = Object.keys(users).length
   const buyerBids = [], sellerBids = [], dealtlog = []
@@ -37,12 +39,12 @@ const Chart = ({users, deals, expanded}) => {
   return (
     <Card initiallyExpanded={expanded}>
       <CardHeader
-        title="結果グラフ"
+        title={ReadJSON().static_text["graph"]}
         actAsExpander={true}
         showExpandableButton={true}
       />
       <CardText expandable={true}>
-        <p>消費者余剰：{consumerSurplus}, 生産者余剰：{producerSurplus}, 総余剰：{totalSurplus}</p>
+        <p>{InsertVariable(ReadJSON().static_text["surplus"], {consumer_surplus: consumerSurplus, producer_surplus: producerSurplus, total_surplus: totalSurplus })}</p>
         <Highcharts config={{
           chart: {
             type: 'area',
@@ -50,11 +52,11 @@ const Chart = ({users, deals, expanded}) => {
             inverted: true
           },
           title: {
-            text: "需要・供給曲線"
+            text: ReadJSON().static_text["graph_title"]
           },
           xAxis: {
             title: {
-              text: '価格'
+              text: ReadJSON().static_text["price"]
             },
             min: 0,
             max: usersCount * 100,
@@ -68,14 +70,14 @@ const Chart = ({users, deals, expanded}) => {
               label: {
                 align: 'right',
                 x: -10,
-                text: '理論的な均衡価格(' + (usersCount * 50) + '～' + (usersCount * 50 + 100) + ')'
+                text: InsertVariable(ReadJSON().static_text["ideal_price"], { min: (usersCount * 50), max: (usersCount * 50 + 100) })
               },
               zIndex: 99
             }]
           },
           yAxis: {
             title: {
-              text: '数量'
+              text: ReadJSON().static_text["number"]
             },
             min: 0,
             max: usersCount / 2,
@@ -89,7 +91,7 @@ const Chart = ({users, deals, expanded}) => {
                 rotation: 0,
                 y: 15,
                 x: 10,
-                text: '理論的な均衡取引数量(' + (Math.floor(usersCount / 4)) + ')'
+                text: InsertVariable(ReadJSON().static_text["ideal_number"], { number: (Math.floor(usersCount / 4)) })
             },
             zIndex: 99
             }]
@@ -104,12 +106,12 @@ const Chart = ({users, deals, expanded}) => {
           },
           series: [{
             animation: false,
-            name: '需要',
+            name: ReadJSON().static_text["demand"],
             step: 'right',
             data: buyerBids.sort((a, b) => a - b).map((x, y, a) => [x, a.length - y])
           }, {
             animation: false,
-            name: '供給',
+            name: ReadJSON().static_text["supply"],
             step: 'left',
             data: sellerBids.sort((a, b) => a - b).map((x, y) => [x, y + 1])
           }]
@@ -120,11 +122,11 @@ const Chart = ({users, deals, expanded}) => {
             inverted: false
           },
           title: {
-            text: "成立価格の推移"
+            text: ReadJSON().static_text["price_change"]
           },
           xAxis: {
             title: {
-              text: '成立順'
+              text: ReadJSON().static_text["success_order"],
             },
             min: 1,
             max: dealtCount + 2,
@@ -140,14 +142,14 @@ const Chart = ({users, deals, expanded}) => {
                 y: 15,
                 x: -10,
                 align: 'right',
-                text: '理論的な均衡取引数量(' + (Math.floor(usersCount / 4)) + ')'
+                text: InsertVariable(ReadJSON().static_text["ideal_number"], { number: (Math.floor(usersCount / 4)) })
               },
               zIndex: 99
             }]
           },
           yAxis: {
             title: {
-              text: '価格'
+              text: ReadJSON().static_text["price"]
             },
             min: 0,
             max: usersCount * 100,
@@ -160,7 +162,7 @@ const Chart = ({users, deals, expanded}) => {
               label: {
                 align: 'right',
                 x: -10,
-                text: '理論的な均衡価格(' + (usersCount * 50) + '～' + (usersCount * 50 + 100) + ')'
+                text: InsertVariable(ReadJSON().static_text["ideal_price"], { min: (usersCount * 50), max: (usersCount * 50 + 100) })
               },
               zIndex: 99
             }]
@@ -176,7 +178,7 @@ const Chart = ({users, deals, expanded}) => {
           series: [{
             type: 'area',
             animation: false,
-            name: '成立価格',
+            name: ReadJSON().static_text["success_price"],
             data: dealtlog.reverse()
           }]
         }} />

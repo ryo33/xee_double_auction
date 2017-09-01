@@ -17,6 +17,8 @@ import { enableScreenPage } from './actions'
 import { getPage } from 'util/index'
 import { submitMode } from 'host/actions'
 
+import { ReadJSON } from '../util/ReadJSON'
+
 const pages = ["wait", "description", "auction", "result"]
 
 const mapStateToProps = ({ mode, loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users, screenPage }) => ({
@@ -99,7 +101,7 @@ class App extends Component {
     }
     if (this.props.mode !== nextPage) {
       if(nextPage === 'result') {
-        Materialize.toast('ESCキーを押すと管理者画面に戻ります。', 5000, 'rounded')
+        Materialize.toast(ReadJSON().static_text["push_esc"], 5000, 'rounded')
         this.setState({
           screenPage: true
         })
@@ -118,7 +120,7 @@ class App extends Component {
         <div>
           <ScreenPage />
           <RaisedButton
-            label={"管理者画面へ"}
+            label={ReadJSON().static_text["back_top"]}
             onTouchTap={this.handleCloseScreenPage}
             style={{
               marginTop: "5%",
@@ -168,10 +170,10 @@ class App extends Component {
             expanded={false}
           />
           <Dialog
-            title={"オプション"}
+            title={ReadJSON().static_text["option"]}
             actions={[
               <RaisedButton
-                label={"適用"}
+                label={ReadJSON().static_text["apply"]}
                 primary={true}
                 onTouchTap={this.handleCloseSetting}
               />
@@ -181,10 +183,10 @@ class App extends Component {
             autoScrollBodyContent={true}
           />
           <Dialog
-            title={"編集"}
+            title={ReadJSON().static_text["edit"]}
             actions={[
               <RaisedButton
-                label={"適用"}
+                label={ReadJSON().static_text["apply"]}
                 primary={true}
                 onTouchTap={this.handleCloseEdit}
               />

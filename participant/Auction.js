@@ -9,6 +9,8 @@ import DealDialog from './DealDialog'
 import BidsTable from 'components/BidsTable'
 import BidForm from './BidForm'
 
+import { ReadJSON, InsertVariable } from '../util/ReadJSON'
+
 const mapStateToProps = ( {personal, buyerBids, sellerBids, deals, highestBid, lowestBid} ) =>
 Object.assign({}, personal, { buyerBids, sellerBids, deals, highestBid, lowestBid })
 
@@ -21,17 +23,17 @@ const Buyer = ({ money, bidded, bid, dealt, deal }) => {
         bid = {bid}
         profit = {money - deal}
         />
-        <p>{deal}で取引が成立しました。（あなたの提案: {bid}）</p>
-        <p>利益は{money - deal}です。</p>
+        <p>{InsertVariable(ReadJSON().static_text["success_text"], { deal: deal, bid: bid })}</p>
+        <p>{InsertVariable(ReadJSON().static_text["benefit"], { benefit: money - deal })}</p>
       </div>
     )
   } else {
     return (
       <div>
-            <p>あなたは買い手です。</p>
-            <p>予算である{money}以下の価格で購入することができます。</p>
+            <p>{ReadJSON().static_text["your_buyer"]}</p>
+            <p>{InsertVariable(ReadJSON().static_text["buy"], { money: money })}</p>
             {bidded
-              ? <p>あなたは買い手として{bid}で提案中です。</p>
+              ? <p>{InsertVariable(ReadJSON().static_text["buyer_suggest"], { bid: bid })}</p>
               : null
             }
             <BidForm />
@@ -49,17 +51,17 @@ const Seller = ({ money, bidded, bid, dealt, deal }) => {
         bid = {bid}
         profit = {deal - money}
         />
-        <p>{deal}で取引が成立しました。（あなたの提案: {bid}）</p>
-        <p>利益は{deal - money}です。</p>
+        <p>{InsertVariable(ReadJSON().static_text["success_text"], { deal: deal, bid: bid })}</p>
+        <p>{InsertVariable(ReadJSON().static_text["benefit"], { benefit: deal - money })}</p>
       </div>
     )
   } else {
     return (
       <div>
-        <p>あなたは売り手です。</p>
-        <p>仕入れ値である{money}以上の価格で販売することができます。</p>
+        <p>{ReadJSON().static_text["your_seller"]}</p>
+        <p>{InsertVariable(ReadJSON().static_text["sell"], { money: money })}</p>
         {bidded
-          ? <p>あなたは売り手として{bid}で提案中です。</p>
+          ? <p>{InsertVariable(ReadJSON().static_text["seller_suggest"], { bid: bid })}</p>
           : null
         }
         <BidForm />
@@ -74,7 +76,7 @@ const Auction = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, role, mo
     <CardText>
     { role == "buyer" ? <Buyer money={money} bidded={bidded} bid={bid} dealt={dealt} deal={deal} /> : null }
     { role == "seller" ? <Seller money={money} bidded={bidded} bid={bid} dealt={dealt} deal={deal} /> : null }
-    { role == null ? <p>あなたは現在進行中のダブルオークションには参加していません。</p> : null }
+    { role == null ? <p>{ReadJSON().static_text["donot_join"]}</p> : null }
     </CardText>
     </Card>
     <Divider

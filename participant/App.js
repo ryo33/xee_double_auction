@@ -10,6 +10,8 @@ import Wait from 'participant/Wait'
 import Description from 'participant/Description'
 import Result from 'participant/Result'
 
+import { ReadJSON, LineBreak } from '../util/ReadJSON'
+
 const mapStateToProps = ({loading, mode}) => ({
   loading,
   mode
@@ -30,12 +32,12 @@ class App extends Component {
     if(loading) {
       return (
         <Card style={{padding: '20px'}}>
-          <CardTitle title="接続中" style={{padding: '0px', marginTop: '7px', marginBottom: '14px'}}/>
+          <CardTitle title={ReadJSON().static_text["connecting"][0]} style={{padding: '0px', marginTop: '7px', marginBottom: '14px'}}/>
           <CardText style={{padding: '0px', margin: '0px'}}>
             <div style={{textAlign: 'center'}}>
               <CircularProgress style={{margin: '0px', padding: '0px' }} />
             </div>
-            　　　		<p style={{margin: '0px', padding: '0px'}}>サーバーに接続しています。<br/>このまましばらくお待ちください。</p>
+            　　　		<p style={{margin: '0px', padding: '0px'}}>{LineBreak(ReadJSON().static_text["connecting"][0])}</p>
           </CardText>
         </Card>
       )

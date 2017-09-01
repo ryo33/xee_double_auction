@@ -6,6 +6,8 @@ import FlatButton from 'material-ui/FlatButton'
 
 import throttleProps from 'react-throttle-render'
 
+import { ReadJSON, InsertVariable } from '../util/ReadJSON'
+
 const mapStateToProps = ({personal}) => ({
   role: personal.role,
   money: personal.money
@@ -30,7 +32,7 @@ class DealDialog extends Component {
   render() {
     const actions = [
       <FlatButton
-        label="OK"
+        label={ReadJSON().static_text["ok"]}
         primary={true}
         onTouchTap={this.handleClose.bind(this)}
       />
@@ -38,15 +40,15 @@ class DealDialog extends Component {
     return (
       <div>
         <Dialog
-          title="取引成立"
+          title={ReadJSON().static_text["deal_success"][0]}
           actions={actions}
           modal={true}
           open={this.state.open}
         >
-        <p>{this.props.deal}で取引が成立しました。</p>
-        <p>(あなたの提案: {this.props.bid}) </p>
-        <p>利益は{this.props.profit}です。</p>
-        <p>実験終了までしばらくお待ち下さい。</p>
+        <p>{InsertVariable(ReadJSON().static_text["deal_success"][1], { deal: this.props.deal})}</p>
+        <p>{InsertVariable(ReadJSON().static_text["deal_success"][2], { bid: this.props.bid})}</p>
+        <p>{InsertVariable(ReadJSON().static_text["deal_success"][3], { profit: this.props.profit})}</p>
+        <p>{ReadJSON().static_text["deal_success"][4]}</p>
         </Dialog>
       </div>
     )

@@ -1,13 +1,15 @@
+import { ReadJSON } from '../util/ReadJSON'
+
 export function getPage(mode) {
   switch(mode) {
     case 'wait':
-      return '待機'
+      return ReadJSON().static_text["pages"][0]
     case 'description':
-      return '説明'
+      return ReadJSON().static_text["pages"][1]
     case 'auction':
-      return '実験'
+      return ReadJSON().static_text["pages"][2]
     case 'result':
-      return '結果'
+      return ReadJSON().static_text["pages"][3]
     default:
       return mode
   }
@@ -16,10 +18,10 @@ export function getPage(mode) {
 export function getRole(role) {
   switch (role) {
     case 'buyer':
-      return '買い手'
+      return ReadJSON().static_text["roles"][0]
     case 'seller':
-      return '売り手'
+      return ReadJSON().static_text["roles"][1]
     default:
-      return '不参加'
+      return ReadJSON().static_text["roles"][2]
   }
 }

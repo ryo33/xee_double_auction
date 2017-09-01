@@ -6,17 +6,19 @@ import CircularProgress from 'material-ui/CircularProgress'
 
 const mapStateToProps = ({ userNumber }) => ({ userNumber })
 
+import { ReadJSON, InsertVariable } from '../util/ReadJSON'
+
 class Wait extends Component {
     render() {
         const { userNumber } = this.props
         return (
             <div>
                 <Card>
-                    <CardTitle title="ダブルオークション実験" subtitle="待機中"/>
+                    <CardTitle title={ReadJSON().static_text["title"]} subtitle={ReadJSON().static_text["waiting"][0]}/>
                     <CardText>
-                        <p>参加者の登録を待っています。</p>
-                        <p>この画面のまましばらくお待ち下さい。</p>
-                        <p>現在の参加者は{ userNumber }人です。</p>
+                        <p>{ReadJSON().static_text["waiting"][1]}</p>
+                        <p>{ReadJSON().static_text["waiting"][2]}</p>
+                        <p>{InsertVariable(ReadJSON().static_text["waiting"][3], { user_number: userNumber})}</p>
                     </CardText>
                     <div style={{textAlign: "center"}}>
                         <CircularProgress size={2}/>

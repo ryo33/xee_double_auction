@@ -14,6 +14,8 @@ import { bid } from './actions'
 
 import throttleProps from 'react-throttle-render'
 
+import { ReadJSON, InsertVariable } from '../util/ReadJSON'
+
 const mapStateToProps = ({personal}) => ({
   role: personal.role,
   money: personal.money
@@ -61,12 +63,12 @@ class BidForm extends Component {
 
   setErrorText(role, numValue) {
     if (isNaN(numValue)) {
-      this.setState({ errorText: '正の整数を入力してください'})
+      this.setState({ errorText: ReadJSON().static_text["error_text"][0]})
     } else {
       if (role == "buyer") {
-        this.setState({ errorText: '予算以下の価格で提案して下さい'})
+        this.setState({ errorText: ReadJSON().static_text["error_text"][1]})
       } else {
-        this.setState({ errorText: '仕入れ値以上の価格で提案して下さい'})
+        this.setState({ errorText: ReadJSON().static_text["error_text"][2]})
       }
     }
   }
@@ -98,7 +100,7 @@ class BidForm extends Component {
           autoFocus
           value={value}
           errorText = {this.state.errorText}
-          floatingLabelText='提案金額'
+          floatingLabelText={ReadJSON().static_text["suggest_price"]}
           onChange={this.handleChange.bind(this)}
           onKeyDown={this.handleKeyDown.bind(this)}
         /><br/>
@@ -107,10 +109,10 @@ class BidForm extends Component {
           disabled={!isValid}
           onClick={this.handleClick.bind(this)}
           style={{marginTop: 18}}
-        >送信</RaisedButton>
+        >{ReadJSON().static_text["send"]}</RaisedButton>
         <SnackBar
           open={snack}
-          message={'あなたは'+ bid + 'で提案しました。'}
+          message={InsertVariable(ReadJSON().static_text["your_suggestion"], { bid: bid })}
           autoHideDuration={3000}
           onRequestClose={this.closeSnack.bind(this)}
         />
