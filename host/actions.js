@@ -10,3 +10,5 @@ export const enableScreenMode = createAction('ENABLE_SCREEN_MODE')
 export const disableScreenMode = createAction('DISABLE_SCREEN_MODE')
 
 export const openParticipantPage = createAction('open participant page', id => id)
+
+export const updateSetting = createAction('UPDATE_SETTING', data => data)

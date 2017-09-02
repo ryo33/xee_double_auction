@@ -27,7 +27,11 @@ defmodule DoubleAuction do
        lowest_bid: nil,
        deals: [],
        started: false,
+       ex_type: "simple",
        price_base: 100,
+       price_inc: 100,
+       price_max: 20,
+       price_min: 10,
        user_number: 0
      }}}
   end
@@ -51,6 +55,7 @@ defmodule DoubleAuction do
       "change_mode" -> Host.change_mode(data, params)
       "match" -> Host.match(data)
       "fetch_contents" -> Host.fetch_contents(data)
+      "update_setting" -> Host.update_setting(data, params)
     end
     wrap_result(data, new)
   end

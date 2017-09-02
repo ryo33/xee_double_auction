@@ -18,6 +18,11 @@ const reducer = createReducer({
   deals: [],
   highestBid: null,
   lowestBid: null,
-  screenMode: false
+  screenMode: false,
+  ex_type: 'simple',
+  price_base: 100,
+  price_inc: 100,
+  price_max: 20,
+  price_min: 10,
 })
 export default reducer

@@ -6,6 +6,9 @@ import download from 'datauri-download'
 import RaisedButton from 'material-ui/RaisedButton'
 import Dialog from 'material-ui/Dialog'
 import Divider from 'material-ui/Divider'
+import DropDownMenu from 'material-ui/DropDownMenu'
+import MenuItem from 'material-ui/MenuItem'
+import TextField from 'material-ui/TextField'
 
 import { HostPage } from 'xee-components'
 import Chart from 'components/Chart'
@@ -14,14 +17,16 @@ import Users from './Users'
 import ScreenPage from './ScreenPage'
 
 import { enableScreenPage } from './actions'
-import { getPage } from 'util/index'
+import { getPage, getExperimentType } from 'util/index'
 import { submitMode } from 'host/actions'
+import { updateSetting } from './actions'
 
 import { ReadJSON } from '../util/ReadJSON'
 
 const pages = ["wait", "description", "auction", "result"]
+const ex_types = ["simple", "real"]
 
-const mapStateToProps = ({ mode, loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users, screenPage }) => ({
+const mapStateToProps = ({ mode, loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users, screenPage, ex_type, price_base, price_inc, price_max, price_min }) => ({
   mode,
   loading,
   buyerBids,
@@ -30,7 +35,12 @@ const mapStateToProps = ({ mode, loading, buyerBids, sellerBids, deals, highestB
   lowestBid,
   deals,
   users,
-  screenPage
+  screenPage,
+  ex_type,
+  price_base,
+  price_inc,
+  price_max,
+  price_min,
 })
 
 const { ESC } = Keys
@@ -41,16 +51,27 @@ class App extends Component {
     this.state = {
       screenPage: false,
       setting: false,
-      edit: false
+      edit: false,
+      disabled: false,
     }
     this.handleOpenSetting = () => this.setState({
-      setting: true
+      setting: true,
+      ex_type: this.props.ex_type,
+      price_base: this.props.price_base,
+      price_inc: this.props.price_inc,
+      price_max: this.props.price_max,
+      price_min: this.props.price_min,
     })
-    this.handleCloseSetting = () => this.setState({
-      setting: false
+    this.handleMenuChange = (event, index, value) => this.setState({
+      ex_type: value,
+      price_base: this.props.price_base,
+      price_inc: this.props.price_inc,
+      price_max: this.props.price_max,
+      price_min: this.props.price_min,
+      disabled: false,
     })
     this.handleOpenEdit = () => this.setState({
-      edit: true
+      edit: true,
     })
     this.handleCloseEdit = () => this.setState({
       edit: false
@@ -60,6 +81,64 @@ class App extends Component {
     })
     this.handleChangePage = this.handleChangePage.bind(this)
     this.handleDownload = this.handleDownload.bind(this)
+  }
+
+  setting() {
+    const { ex_type, price_base, price_inc, price_max, price_min  } = this.state
+    console.log(ex_type)
+    return (
+      <span>
+        <DropDownMenu value={ex_type} onChange={this.handleMenuChange} >
+          {ex_types.map(type => <MenuItem value={type} primaryText={getExperimentType(type)} />)}
+        </DropDownMenu> <br/>
+         {(ex_type == 'simple')?
+        <span><TextField
+          hintText={100}
+          value={price_base}
+          floatingLabelText={ReadJSON().static_text["price_base"]}
+          onChange={this.handleChangeText.bind(this, 'price_base')}
+        /><br/>
+        <TextField
+          hintText={100}
+          value={price_inc}
+          floatingLabelText={ReadJSON().static_text["price_inc"]}
+          onChange={this.handleChangeText.bind(this, 'price_inc')}
+        /></span>
+        :
+        <span><TextField
+          hintText={20}
+          value={price_max}
+          floatingLabelText={ReadJSON().static_text["price_max"]}
+          onChange={this.handleChangeText.bind(this, 'price_max')}
+        /><br/>
+        <TextField
+          hintText={10}
+          value={price_min}
+          floatingLabelText={ReadJSON().static_text["price_min"]}
+          onChange={this.handleChangeText.bind(this, 'price_min')}
+        /></span>
+         }
+      </span>
+    )
+  }
+
+  handleChangeText(key, event) {
+    const value = (event.target.value.length > 0)? parseInt(event.target.value) : 0
+    switch(key) {
+      case 'price_base': this.setState({ price_base: value }); break;
+      case 'price_inc' : this.setState({ price_inc : value }); break;
+      case 'price_max' : this.setState({ price_max : value }); break;
+      case 'price_min' : this.setState({ price_min : value }); break;
+    }
+    if(key == 'price_max') this.setState({ disabled: value < this.state.price_min })
+    if(key == 'price_min') this.setState({ disabled: this.state.price_max < value }) 
+ }
+
+  handleCloseSetting() {
+    const { dispatch } = this.props
+    const { ex_type, price_base, price_inc, price_max, price_min  } = this.state
+    dispatch(updateSetting({ ex_type: ex_type, price_base: price_base, price_inc: price_inc, price_max: price_max, price_min: price_min }))
+    this.setState({ setting: false })
   }
 
   handleChangePage(page) {
@@ -175,13 +254,16 @@ class App extends Component {
               <RaisedButton
                 label={ReadJSON().static_text["apply"]}
                 primary={true}
-                onTouchTap={this.handleCloseSetting}
+                onTouchTap={this.handleCloseSetting.bind(this)}
+                disabled={this.state.disabled}
               />
             ]}
             model={false}
             open={this.state.setting}
             autoScrollBodyContent={true}
-          />
+          >
+            {this.setting()}
+          </Dialog>
           <Dialog
             title={ReadJSON().static_text["edit"]}
             actions={[

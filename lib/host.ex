@@ -10,6 +10,11 @@ defmodule DoubleAuction.Host do
       lowest_bid: "lowestBid",
       highest_bid: "highestBid",
       lowest_bid: "lowestBid",
+      ex_type: true,
+      price_base: true,
+      price_inc: true,
+      price_max: true,
+      price_min: true,
     }
     data
     |> Transmap.transform(rule)
@@ -28,11 +33,14 @@ defmodule DoubleAuction.Host do
   end
 
   def match(data) do
-    participants = Enum.shuffle(data.participants) |> Enum.map_reduce(1, fn {id, participant}, acc ->
-      if rem(acc, 2) == 0 do
+    participants = Enum.shuffle(data.participants) |> Enum.map_reduce(0, fn {id, participant}, acc ->
+      if rem(acc, 2) == 1 do
         new_participant = %{
           role: "buyer",
-          money: acc * data.price_base,
+          money: case data.ex_type do
+            "simple" -> acc * data.price_inc + data.price_base
+            "real"   -> :rand.uniform(data.price_max - data.price_min + 1) +data. price_min - 1
+          end,
           bidded: false,
           bid: nil,
           dealt: false,
@@ -41,7 +49,10 @@ defmodule DoubleAuction.Host do
       else
         new_participant = %{
           role: "seller",
-          money: acc * data.price_base,
+          money: case data.ex_type do
+            "simple" -> acc * data.price_inc + data.price_base
+            "real"   -> :rand.uniform(data.price_max - data.price_min + 1) +data. price_min - 1
+          end,
           bidded: false,
           bid: nil,
           dealt: false,
@@ -61,5 +72,9 @@ defmodule DoubleAuction.Host do
       payload: filter_data(data)
     }
     {:ok, %{data: data, host: %{action: action}}}
+  end
+
+  def update_setting(data, params) do
+    %{data | ex_type: params["ex_type"], price_base: params["price_base"], price_inc: params["price_inc"], price_max: params["price_max"], price_min: params["price_min"]}
   end
 end

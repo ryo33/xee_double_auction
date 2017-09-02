@@ -15,6 +15,17 @@ export function getPage(mode) {
   }
 }
 
+export function getExperimentType(type) {
+  switch(type) {
+    case 'simple':
+      return ReadJSON().static_text["simple"]
+    case 'real':
+      return ReadJSON().static_text["real"]
+    default:
+      return type
+  }
+}
+
 export function getRole(role) {
   switch (role) {
     case 'buyer':
