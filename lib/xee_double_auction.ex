@@ -32,7 +32,8 @@ defmodule DoubleAuction do
        price_inc: 100,
        price_max: 20,
        price_min: 10,
-       user_number: 0
+       user_number: 0,
+       dynamic_text: nil
      }}}
   end
 
@@ -56,6 +57,7 @@ defmodule DoubleAuction do
       "match" -> Host.match(data)
       "fetch_contents" -> Host.fetch_contents(data)
       "update_setting" -> Host.update_setting(data, params)
+      "update_text" -> Host.update_text(data, params)
     end
     wrap_result(data, new)
   end

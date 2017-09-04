@@ -26,13 +26,13 @@ export function getExperimentType(type) {
   }
 }
 
-export function getRole(role) {
+export function getRole(role, dynamic_text) {
   switch (role) {
     case 'buyer':
-      return ReadJSON().static_text["roles"][0]
+      return dynamic_text["variables"]["seller"]
     case 'seller':
-      return ReadJSON().static_text["roles"][1]
+      return dynamic_text["variables"]["buyer"]
     default:
-      return ReadJSON().static_text["roles"][2]
+      return ReadJSON().static_text["roles"]
   }
 }

@@ -18,6 +18,7 @@
     "react-highcharts": "^8.4.1",
     "react-keydown": "^1.6.5",
     "react-redux": "^4.4.5",
+    "react-swipeable-views": "^0.12.8",
     "react-tap-event-plugin": "^1.0.0",
     "react-throttle-render": "^1.2.0",
     "redux": "^3.5.2",

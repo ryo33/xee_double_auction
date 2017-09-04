@@ -15,6 +15,7 @@ defmodule DoubleAuction.Host do
       price_inc: true,
       price_max: true,
       price_min: true,
+      dynamic_text: true,
     }
     data
     |> Transmap.transform(rule)
@@ -76,5 +77,9 @@ defmodule DoubleAuction.Host do
 
   def update_setting(data, params) do
     %{data | ex_type: params["ex_type"], price_base: params["price_base"], price_inc: params["price_inc"], price_max: params["price_max"], price_min: params["price_min"]}
+  end
+
+  def update_text(data, params) do
+    %{data | dynamic_text: params}
   end
 end

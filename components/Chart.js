@@ -6,7 +6,7 @@ import Highcharts from 'react-highcharts'
 
 import { ReadJSON, InsertVariable } from '../util/ReadJSON'
 
-const Chart = ({users, deals, expanded}) => {
+const Chart = ({users, deals, expanded, dynamic_text}) => {
   const usersCount = Object.keys(users).length
   const buyerBids = [], sellerBids = [], dealtlog = []
   let consumerSurplus = 0
@@ -56,7 +56,7 @@ const Chart = ({users, deals, expanded}) => {
           },
           xAxis: {
             title: {
-              text: ReadJSON().static_text["price"]
+              text: dynamic_text["variables"]["price"]
             },
             min: 0,
             max: usersCount * 100,
@@ -70,7 +70,7 @@ const Chart = ({users, deals, expanded}) => {
               label: {
                 align: 'right',
                 x: -10,
-                text: InsertVariable(ReadJSON().static_text["ideal_price"], { min: (usersCount * 50), max: (usersCount * 50 + 100) })
+                text: InsertVariable(ReadJSON().static_text["ideal_price"], { min: (usersCount * 50), max: (usersCount * 50 + 100) }, dynamic_text["variables"])
               },
               zIndex: 99
             }]
@@ -122,7 +122,7 @@ const Chart = ({users, deals, expanded}) => {
             inverted: false
           },
           title: {
-            text: ReadJSON().static_text["price_change"]
+            text: InsertVariable(ReadJSON().static_text["price_change"], {}, dynamic_text["variables"])
           },
           xAxis: {
             title: {
@@ -149,7 +149,7 @@ const Chart = ({users, deals, expanded}) => {
           },
           yAxis: {
             title: {
-              text: ReadJSON().static_text["price"]
+              text: dynamic_text["variables"]["price"]
             },
             min: 0,
             max: usersCount * 100,
@@ -162,7 +162,7 @@ const Chart = ({users, deals, expanded}) => {
               label: {
                 align: 'right',
                 x: -10,
-                text: InsertVariable(ReadJSON().static_text["ideal_price"], { min: (usersCount * 50), max: (usersCount * 50 + 100) })
+                text: InsertVariable(ReadJSON().static_text["ideal_price"], { min: (usersCount * 50), max: (usersCount * 50 + 100) }, dynamic_text["variables"])
               },
               zIndex: 99
             }]
@@ -178,7 +178,7 @@ const Chart = ({users, deals, expanded}) => {
           series: [{
             type: 'area',
             animation: false,
-            name: ReadJSON().static_text["success_price"],
+            name: InsertVariable(ReadJSON().static_text["success_price"], {}, dynamic_text["variables"]),
             data: dealtlog.reverse()
           }]
         }} />

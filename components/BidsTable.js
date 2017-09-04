@@ -7,7 +7,7 @@ import { Card, CardHeader, CardText } from 'material-ui/Card'
 
 import { ReadJSON, InsertVariable, LineBreak } from '../util/ReadJSON'
 
-const BidsTable = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, expanded }) => {
+const BidsTable = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, expanded, dynamic_text }) => {
   const rows = []
   const length = Math.max.apply(null, [buyerBids, sellerBids, deals].map(a => a.length))
   const maxValue = highestBid ? highestBid.bid : 0
@@ -41,7 +41,7 @@ const BidsTable = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, expand
     >
       <CardHeader
         title={
-          <span>{LineBreak(InsertVariable(ReadJSON().static_text["table_title"], { buyer_num: buyerBids.length, seller_num: sellerBids.length, deals_num: deals.length, max_value: maxValue, min_value: minValue}))}</span>
+          <span>{LineBreak(InsertVariable(ReadJSON().static_text["table_title"], { buyer_num: buyerBids.length, seller_num: sellerBids.length, deals_num: deals.length, max_value: maxValue, min_value: minValue}, dynamic_text["variables"]))}</span>
         }
         actAsExpander={true}
         showExpandableButton={true}
@@ -50,9 +50,9 @@ const BidsTable = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, expand
         <table>
           <thead>
             <tr>
-              <th>{ReadJSON().static_text["buy_price"]}</th>
-              <th>{ReadJSON().static_text["sell_price"]}</th>
-              <th>{ReadJSON().static_text["success_price"]}</th>
+              <th>{dynamic_text["variables"]["selling_price"]}</th>
+              <th>{dynamic_text["variables"]["buying_price"]}</th>
+              <th>{InsertVariable(ReadJSON().static_text["success_price"], {}, dynamic_text["variables"])}</th>
             </tr>
           </thead>
           <tbody>

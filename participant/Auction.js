@@ -9,12 +9,15 @@ import DealDialog from './DealDialog'
 import BidsTable from 'components/BidsTable'
 import BidForm from './BidForm'
 
-import { ReadJSON, InsertVariable } from '../util/ReadJSON'
+import { ReadJSON, LineBreak, InsertVariable } from '../util/ReadJSON'
 
-const mapStateToProps = ( {personal, buyerBids, sellerBids, deals, highestBid, lowestBid} ) =>
-Object.assign({}, personal, { buyerBids, sellerBids, deals, highestBid, lowestBid })
+const mapStateToProps = ( {personal, buyerBids, sellerBids, deals, highestBid, lowestBid, dynamic_text} ) =>
+Object.assign({}, personal, { buyerBids, sellerBids, deals, highestBid, lowestBid, dynamic_text })
 
-const Buyer = ({ money, bidded, bid, dealt, deal }) => {
+const Buyer = ({ money, bidded, bid, dealt, deal, dynamic_text }) => {
+  console.log("nnnnnnnnnnnaaaaaaaaaaaaaaaaaaa")
+  console.log(dynamic_text["your_buyer"])
+  console.log(dynamic_text["desc"][2])
   if (dealt) {
     return (
       <div>
@@ -24,16 +27,15 @@ const Buyer = ({ money, bidded, bid, dealt, deal }) => {
         profit = {money - deal}
         />
         <p>{InsertVariable(ReadJSON().static_text["success_text"], { deal: deal, bid: bid })}</p>
-        <p>{InsertVariable(ReadJSON().static_text["benefit"], { benefit: money - deal })}</p>
+        <p>{InsertVariable(ReadJSON().static_text["benefit"], { benefit: money - deal }, dynamic_text["variables"])}</p>
       </div>
     )
   } else {
     return (
       <div>
-            <p>{ReadJSON().static_text["your_buyer"]}</p>
-            <p>{InsertVariable(ReadJSON().static_text["buy"], { money: money })}</p>
+            <p>{LineBreak(InsertVariable(dynamic_text["your_buyer"], { money: money }, dynamic_text["variables"]))}</p>
             {bidded
-              ? <p>{InsertVariable(ReadJSON().static_text["buyer_suggest"], { bid: bid })}</p>
+              ? <p>{InsertVariable(ReadJSON().static_text["buyer_suggest"], { bid: bid }, dynamic_text["variables"])}</p>
               : null
             }
             <BidForm />
@@ -42,7 +44,7 @@ const Buyer = ({ money, bidded, bid, dealt, deal }) => {
   }
 }
 
-const Seller = ({ money, bidded, bid, dealt, deal }) => {
+const Seller = ({ money, bidded, bid, dealt, deal, dynamic_text }) => {
   if (dealt) {
     return (
       <div>
@@ -52,16 +54,15 @@ const Seller = ({ money, bidded, bid, dealt, deal }) => {
         profit = {deal - money}
         />
         <p>{InsertVariable(ReadJSON().static_text["success_text"], { deal: deal, bid: bid })}</p>
-        <p>{InsertVariable(ReadJSON().static_text["benefit"], { benefit: deal - money })}</p>
+        <p>{InsertVariable(ReadJSON().static_text["benefit"], { benefit: deal - money }, dynamic_text["variables"])}</p>
       </div>
     )
   } else {
     return (
       <div>
-        <p>{ReadJSON().static_text["your_seller"]}</p>
-        <p>{InsertVariable(ReadJSON().static_text["sell"], { money: money })}</p>
+        <p>{LineBreak(InsertVariable(dynamic_text["your_seller"], { money: money }, dynamic_text["variables"]))}</p>
         {bidded
-          ? <p>{InsertVariable(ReadJSON().static_text["seller_suggest"], { bid: bid })}</p>
+          ? <p>{InsertVariable(ReadJSON().static_text["seller_suggest"], { bid: bid }, dynamic_text["variables"])}</p>
           : null
         }
         <BidForm />
@@ -70,12 +71,12 @@ const Seller = ({ money, bidded, bid, dealt, deal }) => {
   }
 }
 
-const Auction = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, role, money, bidded, bid, dealt, deal }) => (
+const Auction = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, role, money, bidded, bid, dealt, deal, dynamic_text }) => (
   <div>
     <Card>
     <CardText>
-    { role == "buyer" ? <Buyer money={money} bidded={bidded} bid={bid} dealt={dealt} deal={deal} /> : null }
-    { role == "seller" ? <Seller money={money} bidded={bidded} bid={bid} dealt={dealt} deal={deal} /> : null }
+    { role == "buyer" ? <Buyer money={money} bidded={bidded} bid={bid} dealt={dealt} deal={deal} dynamic_text={dynamic_text} /> : null }
+    { role == "seller" ? <Seller money={money} bidded={bidded} bid={bid} dealt={dealt} deal={deal} dynamic_text={dynamic_text} /> : null }
     { role == null ? <p>{ReadJSON().static_text["donot_join"]}</p> : null }
     </CardText>
     </Card>
@@ -91,6 +92,7 @@ const Auction = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, role, mo
       highestBid={highestBid}
       lowestBid={lowestBid}
       expanded={true}
+      dynamic_text={dynamic_text}
     />
   </div>
 )

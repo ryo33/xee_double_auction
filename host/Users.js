@@ -24,12 +24,12 @@ const User = ({ id, role, money, bid, bidded, dealt, deal, openParticipantPage }
   </tr>
 )
 
-const mapStateToProps = ({ users }) => ({ users })
+const mapStateToProps = ({ users, dynamic_text }) => ({ users, dynamic_text })
 const actionCreators = {
   openParticipantPage
 }
 
-const Users = ({ users, openParticipantPage }) => (
+const Users = ({ users, openParticipantPage, dynamic_text }) => (
   <Card initiallyExpanded={false}>
     <CardHeader
       title={InsertVariable(ReadJSON().static_text["registrant_num"], {number: Object.keys(users).length })}
@@ -42,7 +42,7 @@ const Users = ({ users, openParticipantPage }) => (
           <tr>
             <th>{ReadJSON().static_text["id"]}</th>
             <th>{ReadJSON().static_text["role"]}</th>
-            <th>{ReadJSON().static_text["price"]}</th>
+            <th>{dynamic_text["variables"]["price"]}</th>
             <th>{ReadJSON().static_text["state"]}</th>
           </tr>
         </thead>

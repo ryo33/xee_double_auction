@@ -12,7 +12,8 @@ const reducer = createReducer({
   lowestBid: null,
   deals: [],
   personal: {
-  }
+  },
+  dynamic_text: null,
 })
 
 export default reducer

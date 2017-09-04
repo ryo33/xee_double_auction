@@ -8,9 +8,10 @@ import throttleProps from 'react-throttle-render'
 
 import { ReadJSON, InsertVariable } from '../util/ReadJSON'
 
-const mapStateToProps = ({personal}) => ({
+const mapStateToProps = ({personal, dynamic_text}) => ({
   role: personal.role,
-  money: personal.money
+  money: personal.money,
+  dynamic_text: dynamic_text
 })
 
 class DealDialog extends Component {
@@ -47,7 +48,7 @@ class DealDialog extends Component {
         >
         <p>{InsertVariable(ReadJSON().static_text["deal_success"][1], { deal: this.props.deal})}</p>
         <p>{InsertVariable(ReadJSON().static_text["deal_success"][2], { bid: this.props.bid})}</p>
-        <p>{InsertVariable(ReadJSON().static_text["deal_success"][3], { profit: this.props.profit})}</p>
+        <p>{InsertVariable(ReadJSON().static_text["deal_success"][3], { benefit: this.props.profit}, this.props.dynamic_text["variables"])}</p>
         <p>{ReadJSON().static_text["deal_success"][4]}</p>
         </Dialog>
       </div>

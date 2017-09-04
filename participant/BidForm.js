@@ -16,9 +16,10 @@ import throttleProps from 'react-throttle-render'
 
 import { ReadJSON, InsertVariable } from '../util/ReadJSON'
 
-const mapStateToProps = ({personal}) => ({
+const mapStateToProps = ({personal, dynamic_text}) => ({
   role: personal.role,
-  money: personal.money
+  money: personal.money,
+  dynamic_text: dynamic_text
 })
 
 class BidForm extends Component {
@@ -63,12 +64,12 @@ class BidForm extends Component {
 
   setErrorText(role, numValue) {
     if (isNaN(numValue)) {
-      this.setState({ errorText: ReadJSON().static_text["error_text"][0]})
+      this.setState({ errorText: InsertVariable(ReadJSON().static_text["error_text"][0], {}, this.props.dynamic_text["variables"])})
     } else {
       if (role == "buyer") {
-        this.setState({ errorText: ReadJSON().static_text["error_text"][1]})
+        this.setState({ errorText: InsertVariable(ReadJSON().static_text["error_text"][1], {}, this.props.dynamic_text["variables"])})
       } else {
-        this.setState({ errorText: ReadJSON().static_text["error_text"][2]})
+        this.setState({ errorText: InsertVariable(ReadJSON().static_text["error_text"][0], {}, this.props.dynamic_text["variables"])})
       }
     }
   }

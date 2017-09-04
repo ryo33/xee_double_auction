@@ -1,5 +1,27 @@
 {
-  "dynamic_text": {},
+  "dynamic_text": {
+    "variables":{
+      "seller": "売り手",
+      "buyer": "買い手",
+      "budget": "予算",
+      "cost": "仕入れ値",
+      "goods": "財",
+      "unit": "",
+      "price": "価格",
+      "profit": "利益",
+      "selling_price": "売値",
+      "buying_price": "買値"
+    },
+    "desc": [
+      "説明",
+      "これからある<goods>の取引を行います。\n参加者は<seller>と<buyer>に分かれます。\nあなたは、なるべく多くの<profit>が出るように取引してください。",
+      "あなたは<buyer>です。<budget>は<money><unit>です。\n<buyer>は、なるべく低い<price>で<goods>を購入し、多くの<profit>を上げてください。\nまた、<budget>よりも高い<price>で<goods>を購入することはできません。",
+      "あなたは<seller>です。<cost>は<money><unit>です。\n<seller>は、なるべく高い<price>で<goods>を販売し、多くの<profit>を上げてください。\nまた、<cost>よりも低い<price>で<goods>を販売することはできません。",
+      "提案<price>は正の整数で入力しなければなりません。また、提案<price>は取引が成立するまで何度でも変更することができます。"
+    ],
+    "your_buyer": "あなたは<buyer>です。\n<budget>である<money><unit>以下の<price>で購入することができます。",
+    "your_seller": "あなたは<seller>です。\n<cost>である<money><unit>以上の<price>で販売することができます。"
+  },
   "static_text": {
     "title": "ダブルオークション実験",
     "pages": [
@@ -8,11 +30,7 @@
       "実験",
       "結果"
     ],
-    "roles": [
-      "買い手",
-      "売り手",
-      "不参加"
-    ],
+    "roles": "不参加",
     "push_esc": "ESCキーを押すと管理者画面に戻ります。",
     "back_top": "管理者画面へ",
     "option": "オプション",
@@ -25,48 +43,36 @@
     "apply": "適用",
     "edit": "編集",
     "send": "送信",
-    "success": "<deal>で成立",
-    "bid": "<bid>を入札",
+    "success": "<deal><unit>で成立",
+    "bid": "<bid><unit>を入札",
     "yet": "未入札",
     "registrant_num": "登録者<number>人",
     "id": "id",
     "role": "役割",
-    "price": "価格",
     "state": "状態",
     "connecting": [
       "接続中",
       "サーバーに接続しています。\nこのまましばらくお待ちください。"
     ],
-    "success_text": "<deal>で取引が成立しました。（あなたの提案: <bid>）",
-    "benefit": "利益は<benefit>です。",
-    "your_buyer": "あなたは買い手です。",
-    "buyer_suggest": "あなたは買い手として<bid>で提案中です。",
-    "buy": "予算である<money>以下の価格で購入することができます。",
-    "your_seller": "あなたは売り手です。",
-    "sell": "仕入れ値である<money>以上の価格で販売することができます。",
-    "seller_suggest": "あなたは売り手として<bid>で提案中です。",
+    "success_text": "<deal><unit>で取引が成立しました。（あなたの提案: <bid><unit>）",
+    "benefit": "<profit>は<benefit>です。",
+    "buyer_suggest": "あなたは<buyer>として<bid><unit>で提案中です。",
+    "seller_suggest": "あなたは<seller>として<bid><unit>で提案中です。",
     "donot_join": "あなたは現在進行中のダブルオークションには参加していません。",
     "error_text": [
       "正の整数を入力してください",
-      "予算以下の価格で提案して下さい",
-      "仕入れ値以上の価格で提案して下さい"
+      "<budget><unit>以下の<price>で提案して下さい",
+      "<cost><unit>以上の<price>で提案して下さい"
     ],
     "suggest_price": "提案金額",
-    "your_suggestion": "あなたは<bid>で提案しました。",
+    "your_suggestion": "あなたは<bid><unit>で提案しました。",
     "ok": "OK",
-    "deal_succcess": [
+    "deal_success": [
       "取引成立",
-      "<deal>で取引が成立しました。",
-      "(あなたの提案: <bid>)",
-      "利益は<profit>です。",
+      "<deal><unit>で取引が成立しました。",
+      "(あなたの提案: <bid><unit>)",
+      "<benefit>は<profit><unit>です。",
       "実験終了までしばらくお待ちください。"
-    ],
-    "desc": [
-      "説明",
-      "これからある財の取引を行います。\n参加者は売り手と買い手に分かれます。\nあなたは、なるべく多くの利益が出るように取引してください。",
-      "あなたは買い手です。予算は<money>です。\n買い手は、なるべく低い価格で財を購入し、多くの利益を上げてください。\nまた、予算よりも高い価格で財を購入することはできません。",
-      "あなたは売り手です。仕入れ値は<money>です。\n売り手は、なるべく高い価格で財を販売し、多くの利益を上げてください。\nまた、仕入れ値よりも低い価格で財を販売することはできません。",
-      "提案価格は正の整数で入力しなければなりません。また、提案価格は取引が成立するまで何度でも変更することができます。"
     ],
     "waiting": [
       "待機中",
@@ -74,19 +80,17 @@
       "この画面のまましばらくお待ち下さい。",
       "現在の参加者は<user_number>人です。"
     ],
-    "table_title": "買い手：<buyer_num>人、売り手：<seller_num>人、成立済み：<deals_num>件\n買い手最高値：<max_value>、売り手最安値：<min_value>",
-    "buy_price": "買値",
-    "sell_price": "売値",
-    "success_price": "成立価格",
+    "table_title": "<buyer>：<buyer_num>人、<seller>：<seller_num>人、成立済み：<deals_num>件\n<buyer>最高値：<max_value><unit>、<seller>最安値：<min_value><unit>",
+    "success_price": "成立<price>",
     "graph": "結果グラフ",
-    "surplus": "消費者余剰：<consumer_surplus>, 生産者余剰：<producer_surplus>, 総余剰：<total_surplus>",
+    "surplus": "消費者余剰：<consumer_surplus><unit>, 生産者余剰：<producer_surplus><unit>, 総余剰：<total_surplus><unit>",
     "graph_title": "需要・供給曲線",
-    "ideal_price": "理想的な均衡価格(<min>～<max>)",
+    "ideal_price": "理想的な均衡<price>(<min><unit>～<max><unit>)",
     "number": "数量",
     "ideal_number": "理想的な均衡取引数量(<number>)",
     "demand": "需要",
     "supply": "供給",
-    "price_change": "成立価格の推移",
+    "price_change": "成立<price>の推移",
     "success_order": "成立順"
   }
 }

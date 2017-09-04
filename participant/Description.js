@@ -4,9 +4,10 @@ import { Card, CardTitle, CardText, CardAction } from 'material-ui/Card'
 
 import { ReadJSON, InsertVariable, LineBreak } from '../util/ReadJSON'
 
-const mapStateToProps = ({personal}) => ({
+const mapStateToProps = ({personal, dynamic_text}) => ({
     role: personal.role,
-    money: personal.money
+    money: personal.money,
+    dynamic_text: dynamic_text,
 })
 
 class Description extends Component {
@@ -14,18 +15,19 @@ class Description extends Component {
       super(props)
     }
     render() {
+        const { role, money, dynamic_text } = this.props
         return (
         <Card>
-            <CardTitle title={ReadJSON().static_text["title"]} subtitle={ReadJSON().static_text["desc"][0]}/>
+            <CardTitle title={ReadJSON().static_text["title"]} subtitle={dynamic_text["desc"][0]}/>
                 <CardText>
-                    <p>{LineBreak(ReadJSON().static_text["desc"][1])}</p>
+                    <p>{LineBreak(InsertVariable(dynamic_text["desc"][1], {}, dynamic_text["variables"]))}</p>
 
-                    {this.props.role == "buyer"?
-                    <p>{LineBreak(InsertVariable(ReadJSON().static_text["desc"][2], { money: this.props.money }))}</p>
+                    {role == "buyer"?
+                    <p>{LineBreak(InsertVariable(dynamic_text["desc"][2], { money: money }, dynamic_text["variables"]))}</p>
                     :
-                    <p>{LineBreak(InsertVariable(ReadJSON().static_text["desc"][3], { money: this.props.money }))}</p>
+                    <p>{LineBreak(InsertVariable(dynamic_text["desc"][3], { money: money }, dynamic_text["variables"]))}</p>
                     }
-                    <p>{LineBreak(ReadJSON().static_text["desc"][4])}</p>
+                    <p>{LineBreak(InsertVariable(dynamic_text["desc"][4], {}, dynamic_text["variables"]))}</p>
                 </CardText>
             </Card>
         )
