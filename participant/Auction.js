@@ -15,9 +15,6 @@ const mapStateToProps = ( {personal, buyerBids, sellerBids, deals, highestBid, l
 Object.assign({}, personal, { buyerBids, sellerBids, deals, highestBid, lowestBid, dynamic_text })
 
 const Buyer = ({ money, bidded, bid, dealt, deal, dynamic_text }) => {
-  console.log("nnnnnnnnnnnaaaaaaaaaaaaaaaaaaa")
-  console.log(dynamic_text["your_buyer"])
-  console.log(dynamic_text["desc"][2])
   if (dealt) {
     return (
       <div>
@@ -26,7 +23,7 @@ const Buyer = ({ money, bidded, bid, dealt, deal, dynamic_text }) => {
         bid = {bid}
         profit = {money - deal}
         />
-        <p>{InsertVariable(ReadJSON().static_text["success_text"], { deal: deal, bid: bid })}</p>
+        <p>{InsertVariable(ReadJSON().static_text["success_text"], { deal: deal, bid: bid }, dynamic_text["variables"])}</p>
         <p>{InsertVariable(ReadJSON().static_text["benefit"], { benefit: money - deal }, dynamic_text["variables"])}</p>
       </div>
     )
@@ -53,7 +50,7 @@ const Seller = ({ money, bidded, bid, dealt, deal, dynamic_text }) => {
         bid = {bid}
         profit = {deal - money}
         />
-        <p>{InsertVariable(ReadJSON().static_text["success_text"], { deal: deal, bid: bid })}</p>
+        <p>{InsertVariable(ReadJSON().static_text["success_text"], { deal: deal, bid: bid }, dynamic_text["variables"])}</p>
         <p>{InsertVariable(ReadJSON().static_text["benefit"], { benefit: deal - money }, dynamic_text["variables"])}</p>
       </div>
     )

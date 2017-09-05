@@ -113,7 +113,7 @@ class BidForm extends Component {
         >{ReadJSON().static_text["send"]}</RaisedButton>
         <SnackBar
           open={snack}
-          message={InsertVariable(ReadJSON().static_text["your_suggestion"], { bid: bid })}
+          message={InsertVariable(ReadJSON().static_text["your_suggestion"], { bid: bid }, this.props.dynamic_text["variables"])}
           autoHideDuration={3000}
           onRequestClose={this.closeSnack.bind(this)}
         />

@@ -71,7 +71,7 @@
       "取引成立",
       "<deal><unit>で取引が成立しました。",
       "(あなたの提案: <bid><unit>)",
-      "<benefit>は<profit><unit>です。",
+      "<profit>は<benefit><unit>です。",
       "実験終了までしばらくお待ちください。"
     ],
     "waiting": [

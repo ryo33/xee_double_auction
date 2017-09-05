@@ -50,12 +50,7 @@ const { ESC } = Keys
 class App extends Component {
   constructor(props, context) {
     super(props, context)
-    var dynamic_text = this.props.dynamic_text
-    if(!dynamic_text) {
-      const { dispatch } = this.props
-      dynamic_text = ReadJSON().dynamic_text
-      dispatch(updateText(dynamic_text))
-    }
+    var dynamic_text = this.props.dynamic_text? this.props.dynamic_text : ReadJSON().dynamic_text
     this.state = {
       screenPage: false,
       setting: false,
@@ -74,6 +69,7 @@ class App extends Component {
     })
     this.handleOpenEdit = () => this.setState({
       edit: true,
+      dynamic_text: this.props.dynamic_text,
     })
     this.handleSlide = value => this.setState({
       slideIndex: value
@@ -212,7 +208,7 @@ class App extends Component {
     </span>)
 
     var variables = (<div>
-      {Object.keys(this.state.dynamic_text["variables"]).map((key, i) =>
+      {["seller", "buyer", "budget", "cost", "goods", "unit", "price", "profit", "selling_price", "buying_price"].map((key, i) =>
         <div style={{ width: "49%", float: (i % 2 == 0)? "Left" : "Right" }}>
          <TextField
            hintText={key}

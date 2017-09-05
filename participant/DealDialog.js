@@ -46,8 +46,8 @@ class DealDialog extends Component {
           modal={true}
           open={this.state.open}
         >
-        <p>{InsertVariable(ReadJSON().static_text["deal_success"][1], { deal: this.props.deal})}</p>
-        <p>{InsertVariable(ReadJSON().static_text["deal_success"][2], { bid: this.props.bid})}</p>
+        <p>{InsertVariable(ReadJSON().static_text["deal_success"][1], { deal: this.props.deal}, this.props.dynamic_text["variables"])}</p>
+        <p>{InsertVariable(ReadJSON().static_text["deal_success"][2], { bid: this.props.bid}, this.props.dynamic_text["variables"])}</p>
         <p>{InsertVariable(ReadJSON().static_text["deal_success"][3], { benefit: this.props.profit}, this.props.dynamic_text["variables"])}</p>
         <p>{ReadJSON().static_text["deal_success"][4]}</p>
         </Dialog>

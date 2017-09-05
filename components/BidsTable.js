@@ -50,8 +50,8 @@ const BidsTable = ({ buyerBids, sellerBids, deals, highestBid, lowestBid, expand
         <table>
           <thead>
             <tr>
-              <th>{dynamic_text["variables"]["selling_price"]}</th>
               <th>{dynamic_text["variables"]["buying_price"]}</th>
+              <th>{dynamic_text["variables"]["selling_price"]}</th>
               <th>{InsertVariable(ReadJSON().static_text["success_price"], {}, dynamic_text["variables"])}</th>
             </tr>
           </thead>
