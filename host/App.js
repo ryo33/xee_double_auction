@@ -308,7 +308,7 @@ class App extends Component {
   }
 
   render() {
-    const { mode, loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users, dynamic_text } = this.props
+    const { mode, loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users, ex_type, price_base, price_inc, price_max, price_min, dynamic_text } = this.props
     if (this.state.screenPage) {
       return (
         <div>
@@ -363,6 +363,7 @@ class App extends Component {
             users={users}
             deals={deals}
             expanded={false}
+            ex_data={{ ex_type, price_base, price_inc, price_max, price_min }}
             dynamic_text={dynamic_text}
           />
           <Dialog

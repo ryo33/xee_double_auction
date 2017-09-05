@@ -9,16 +9,16 @@ import { openParticipantPage } from 'host/actions'
 
 import { ReadJSON, InsertVariable } from '../util/ReadJSON'
 
-const User = ({ id, role, money, bid, bidded, dealt, deal, openParticipantPage }) => (
+const User = ({ id, role, money, bid, bidded, dealt, deal, openParticipantPage, dynamic_text }) => (
   <tr>
     <td><a onClick={openParticipantPage}>{id}</a></td>
-    <td>{getRole(role)}</td>
+    <td>{getRole(role, dynamic_text)}</td>
     <td>{money}</td>
     <td>{
       dealt
-        ? InsertVariable(ReadJSON().static_text["success"], { deal: deal })
+        ? InsertVariable(ReadJSON().static_text["success"], { deal: deal }, dynamic_text)
         : bidded
-          ? InsertVariable(ReadJSON().static_text["bid"], { bid: bid })
+          ? InsertVariable(ReadJSON().static_text["bid"], { bid: bid }, dynamic_text)
           : ReadJSON().static_text["yet"]
     }</td>
   </tr>
@@ -61,6 +61,7 @@ const Users = ({ users, openParticipantPage, dynamic_text }) => (
                 openParticipantPage={
                   () => openParticipantPage(id)
                 }
+                dynamic_text={dynamic_text}
               />
               ))
           }

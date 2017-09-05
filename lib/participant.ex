@@ -19,6 +19,11 @@ defmodule DoubleAuction.Participant do
       deals: true,
       highest_bid: "highestBid",
       lowest_bid: "lowestBid",
+      ex_type: true,
+      price_base: data.mode == "result",
+      price_inc: data.mode == "result",
+      price_max: data.mode == "result",
+      price_min: data.mode == "result",
       dynamic_text: true,
       participants: participants_rule,
     }

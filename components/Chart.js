@@ -6,9 +6,10 @@ import Highcharts from 'react-highcharts'
 
 import { ReadJSON, InsertVariable } from '../util/ReadJSON'
 
-const Chart = ({users, deals, expanded, dynamic_text}) => {
+const Chart = ({users, deals, expanded, ex_data, dynamic_text}) => {
   const usersCount = Object.keys(users).length
   const buyerBids = [], sellerBids = [], dealtlog = []
+  var ex = ex_data.ex_type == 'simple'
   let consumerSurplus = 0
   let producerSurplus = 0
   let totalSurplus = 0
@@ -34,6 +35,15 @@ const Chart = ({users, deals, expanded, dynamic_text}) => {
     dealtlog.push(get(deals[i], 'deal'))
   }
   totalSurplus = consumerSurplus + producerSurplus
+  var buyerBidsS = buyerBids.sort()
+  var sellerBidsS = sellerBids.sort()
+  var b = buyerBidsS.map(v => { for(var i = 0; i < sellerBidsS.length; i++) if(sellerBidsS[i] > v) return [v, i]; return [v, sellerBidsS.length]; })
+  var s = sellerBidsS.map(v => { for(var i = buyerBidsS.length - 1; i >= 0; i--) if(buyerBidsS[i] < v) return [v, buyerBidsS.length - i - 1]; return [v, buyerBidsS.length]; })
+  console.log(buyerBidsS)
+  console.log(b)
+  console.log(sellerBidsS)
+  console.log(s)
+
   buyerBids.push(0 - 100)
   sellerBids.push(usersCount * 100 + 100)
   return (
@@ -44,7 +54,7 @@ const Chart = ({users, deals, expanded, dynamic_text}) => {
         showExpandableButton={true}
       />
       <CardText expandable={true}>
-        <p>{InsertVariable(ReadJSON().static_text["surplus"], {consumer_surplus: consumerSurplus, producer_surplus: producerSurplus, total_surplus: totalSurplus })}</p>
+        <p>{InsertVariable(ReadJSON().static_text["surplus"], {consumer_surplus: consumerSurplus, producer_surplus: producerSurplus, total_surplus: totalSurplus }, dynamic_text["variables"])}</p>
         <Highcharts config={{
           chart: {
             type: 'area',
@@ -58,15 +68,15 @@ const Chart = ({users, deals, expanded, dynamic_text}) => {
             title: {
               text: dynamic_text["variables"]["price"]
             },
-            min: 0,
-            max: usersCount * 100,
-            tickInterval: 100,
+            min: ex? ex_data.price_base : ex_data.price_min,
+            max: ex? ex_data.price_base + usersCount * ex_data.price_inc : ex_data.price_max,
+            tickInterval: ex? ex_data.price_inc : Math.floor((ex_data.price_max - ex_data.price_min) / 10),
             reversed: false,
             plotLines: [{
               color: 'black',
               dashStyle: 'dot',
               width: 2,
-              value: usersCount * 50 + 50,
+              value:  Math.floor(ex? usersCount * ex_data.price_inc * 0.5 + ex_data.price_base * 0.5 : (ex_data.price_max - ex_data.price_min) * 0.5),
               label: {
                 align: 'right',
                 x: -10,
@@ -122,10 +132,10 @@ const Chart = ({users, deals, expanded, dynamic_text}) => {
             inverted: false
           },
           title: {
-            text: InsertVariable(ReadJSON().static_text["price_change"], {}, dynamic_text["variables"])
+              text: InsertVariable(ReadJSON().static_text["price_change"], {}, dynamic_text["variables"])
           },
           xAxis: {
-            title: {
+                  title: {
               text: ReadJSON().static_text["success_order"],
             },
             min: 1,
@@ -151,14 +161,14 @@ const Chart = ({users, deals, expanded, dynamic_text}) => {
             title: {
               text: dynamic_text["variables"]["price"]
             },
-            min: 0,
-            max: usersCount * 100,
-            tickInterval: 100,
+            min: ex? ex_data.price_base : ex_data.price_min,
+            max: ex? ex_data.price_base + usersCount * ex_data.price_inc : ex_data.price_max,
+            tickInterval: ex? ex_data.price_inc : Math.floor((ex_data.price_max - ex_data.price_min) / 10),
             plotLines: [{
               color: 'black',
               dashStyle: 'dot',
               width: 2,
-              value: usersCount * 50 + 50,
+              value: Math.floor(ex? usersCount * ex_data.price_inc * 0.5 + ex_data.price_base * 0.5 : (ex_data.price_max - ex_data.price_min) * 0.5),
               label: {
                 align: 'right',
                 x: -10,
