@@ -151,7 +151,7 @@ class App extends Component {
   }
 
   questionEditer() {
-    var tabs = ["説明", "実験", "変数"].map((s, i) => <Tab label={s} value={i} />)
+    var tabs = [ReadJSON().static_text["pages"][1], ReadJSON().static_text["pages"][2], ReadJSON().static_text["var"]].map((s, i) => <Tab label={s} value={i} />)
     var desc = (<span>
       <TextField
         hintText={ReadJSON().dynamic_text["desc"][1]}

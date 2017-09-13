@@ -35,17 +35,31 @@ const Chart = ({users, deals, expanded, ex_data, dynamic_text}) => {
     dealtlog.push(get(deals[i], 'deal'))
   }
   totalSurplus = consumerSurplus + producerSurplus
-  var buyerBidsS = buyerBids.sort()
-  var sellerBidsS = sellerBids.sort()
-  var b = buyerBidsS.map(v => { for(var i = 0; i < sellerBidsS.length; i++) if(sellerBidsS[i] > v) return [v, i]; return [v, sellerBidsS.length]; })
-  var s = sellerBidsS.map(v => { for(var i = buyerBidsS.length - 1; i >= 0; i--) if(buyerBidsS[i] < v) return [v, buyerBidsS.length - i - 1]; return [v, buyerBidsS.length]; })
-  console.log(buyerBidsS)
-  console.log(b)
-  console.log(sellerBidsS)
-  console.log(s)
 
-  buyerBids.push(0 - 100)
-  sellerBids.push(usersCount * 100 + 100)
+  var b = buyerBids.sort((a, b) => b - a)
+  var s = sellerBids.sort((a, b) => a - b)
+  var max = Math.max.apply(null, b.concat(s))
+  var min = Math.min.apply(null, b.concat(s))
+
+  var i = 0;
+  while(b[i] >= s[i]) i++
+
+  var tmp = [b[i], b[i - 1], s[i], s[i - 1]].sort();
+  var lower = tmp[1]
+  var upper = tmp[2]
+
+  console.log(i + " " + lower + " " + upper)
+
+  buyerBids.push(-1)
+  buyerBids.push(Math.max.apply(null, buyerBids))
+  sellerBids.push(Math.min.apply(null, sellerBids))
+  sellerBids.push(ex? ex_data.price_base + usersCount * ex_data.price_inc : ex_data.price_max + 1)
+
+  console.log(b.join(','))
+  console.log(buyerBids.sort((a, b) => a - b).map((x, y, a) => '(' + [x, a.length - y - 1].join(',') + ')').join(','))
+  console.log(s.join(','))
+  console.log(sellerBids.sort((a, b) => a - b).map((x, y) => '(' + [x, y + 1].join(',') + ')').join(','))
+
   return (
     <Card initiallyExpanded={expanded}>
       <CardHeader
@@ -68,19 +82,19 @@ const Chart = ({users, deals, expanded, ex_data, dynamic_text}) => {
             title: {
               text: dynamic_text["variables"]["price"]
             },
-            min: ex? ex_data.price_base : ex_data.price_min,
-            max: ex? ex_data.price_base + usersCount * ex_data.price_inc : ex_data.price_max,
+            min: min,
+            max: max,
             tickInterval: ex? ex_data.price_inc : Math.floor((ex_data.price_max - ex_data.price_min) / 10),
             reversed: false,
             plotLines: [{
               color: 'black',
               dashStyle: 'dot',
               width: 2,
-              value:  Math.floor(ex? usersCount * ex_data.price_inc * 0.5 + ex_data.price_base * 0.5 : (ex_data.price_max - ex_data.price_min) * 0.5),
+              value:  Math.floor((lower + upper) * 0.5),
               label: {
                 align: 'right',
                 x: -10,
-                text: InsertVariable(ReadJSON().static_text["ideal_price"], { min: (usersCount * 50), max: (usersCount * 50 + 100) }, dynamic_text["variables"])
+                text: InsertVariable(ReadJSON().static_text["ideal_price"], { min: lower, max: upper }, dynamic_text["variables"])
               },
               zIndex: 99
             }]
@@ -96,12 +110,12 @@ const Chart = ({users, deals, expanded, ex_data, dynamic_text}) => {
               color: 'black',
               dashStyle: 'dot',
               width: 2,
-              value: (Math.floor(usersCount / 4)),
+              value: i,
               label: {
                 rotation: 0,
                 y: 15,
                 x: 10,
-                text: InsertVariable(ReadJSON().static_text["ideal_number"], { number: (Math.floor(usersCount / 4)) })
+                text: InsertVariable(ReadJSON().static_text["ideal_number"], { number: i })
             },
             zIndex: 99
             }]
@@ -118,12 +132,12 @@ const Chart = ({users, deals, expanded, ex_data, dynamic_text}) => {
             animation: false,
             name: ReadJSON().static_text["demand"],
             step: 'right',
-            data: buyerBids.sort((a, b) => a - b).map((x, y, a) => [x, a.length - y])
+            data: buyerBids.sort((a, b) => a - b).map((x, y, a) => [x, a.length - y - 1])
           }, {
             animation: false,
             name: ReadJSON().static_text["supply"],
             step: 'left',
-            data: sellerBids.sort((a, b) => a - b).map((x, y) => [x, y + 1])
+            data: sellerBids.sort((a, b) => a - b).map((x, y) => [x, y])
           }]
         }} />
         <Highcharts config={{
@@ -146,13 +160,13 @@ const Chart = ({users, deals, expanded, ex_data, dynamic_text}) => {
               color: 'black',
               dashStyle: 'dot',
               width: 2,
-              value: (Math.floor(usersCount / 4)),
+              value: i,
               label: {
                 rotation: 0,
                 y: 15,
                 x: -10,
                 align: 'right',
-                text: InsertVariable(ReadJSON().static_text["ideal_number"], { number: (Math.floor(usersCount / 4)) })
+                text: InsertVariable(ReadJSON().static_text["ideal_number"], { number: i })
               },
               zIndex: 99
             }]
@@ -161,18 +175,18 @@ const Chart = ({users, deals, expanded, ex_data, dynamic_text}) => {
             title: {
               text: dynamic_text["variables"]["price"]
             },
-            min: ex? ex_data.price_base : ex_data.price_min,
-            max: ex? ex_data.price_base + usersCount * ex_data.price_inc : ex_data.price_max,
+            min: min,
+            max: max,
             tickInterval: ex? ex_data.price_inc : Math.floor((ex_data.price_max - ex_data.price_min) / 10),
             plotLines: [{
               color: 'black',
               dashStyle: 'dot',
               width: 2,
-              value: Math.floor(ex? usersCount * ex_data.price_inc * 0.5 + ex_data.price_base * 0.5 : (ex_data.price_max - ex_data.price_min) * 0.5),
+              value: Math.floor((lower + upper) * 0.5),
               label: {
                 align: 'right',
                 x: -10,
-                text: InsertVariable(ReadJSON().static_text["ideal_price"], { min: (usersCount * 50), max: (usersCount * 50 + 100) }, dynamic_text["variables"])
+                text: InsertVariable(ReadJSON().static_text["ideal_price"], { min: lower, max: upper }, dynamic_text["variables"])
               },
               zIndex: 99
             }]
