@@ -20,14 +20,14 @@ import ScreenPage from './ScreenPage'
 import { enableScreenPage } from './actions'
 import { getPage, getExperimentType } from 'util/index'
 import { submitMode } from 'host/actions'
-import { updateSetting, updateText } from './actions'
+import { updateSetting, updateText, visit } from './actions'
 
 import { ReadJSON } from '../util/ReadJSON'
 
 const pages = ["wait", "description", "auction", "result"]
 const ex_types = ["simple", "real"]
 
-const mapStateToProps = ({ mode, loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users, screenPage, ex_type, price_base, price_inc, price_max, price_min, dynamic_text }) => ({
+const mapStateToProps = ({ mode, loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users, screenPage, ex_type, price_base, price_inc, price_max, price_min, dynamic_text, isFirstVisit }) => ({
   mode,
   loading,
   buyerBids,
@@ -43,6 +43,7 @@ const mapStateToProps = ({ mode, loading, buyerBids, sellerBids, deals, highestB
   price_max,
   price_min,
   dynamic_text,
+  isFirstVisit,
 })
 
 const { ESC } = Keys
@@ -287,7 +288,12 @@ class App extends Component {
     download(fileName, 'text/csv;charset=utf-8', content)
   }
 
-  componentWillReceiveProps({ keydown, mode: nextPage }) {
+  componentWillReceiveProps({ dispatch, keydown, mode: nextPage , isFirstVisit }) {
+    if(isFirstVisit) {
+      this.handleOpenSetting()
+      dispatch(visit())
+    }
+    
     if (keydown.event && keydown.event.which == ESC) {
       this.setState({
         screenPage: false
@@ -309,6 +315,7 @@ class App extends Component {
 
   render() {
     const { mode, loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users, ex_type, price_base, price_inc, price_max, price_min, dynamic_text } = this.props
+
     if (this.state.screenPage) {
       return (
         <div>

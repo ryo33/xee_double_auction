@@ -33,7 +33,9 @@ defmodule DoubleAuction do
        price_max: 20,
        price_min: 10,
        user_number: 0,
-       dynamic_text: nil
+       dynamic_text: nil,
+       isFirstVisit: true,
+       history: [],
      }}}
   end
 
@@ -58,6 +60,7 @@ defmodule DoubleAuction do
       "fetch_contents" -> Host.fetch_contents(data)
       "update_setting" -> Host.update_setting(data, params)
       "update_text" -> Host.update_text(data, params)
+      "visit" -> Host.visit(data)
     end
     wrap_result(data, new)
   end

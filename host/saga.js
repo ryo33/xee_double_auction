@@ -1,6 +1,6 @@
 import { take, put, fork, select, call } from 'redux-saga/effects'
 
-import { submitMode, changeMode, match, nextMode, updateSetting, updateText } from './actions'
+import { submitMode, changeMode, match, nextMode, updateSetting, updateText, visit } from './actions'
 
 import { getMode } from 'util/index'
 
@@ -52,12 +52,20 @@ function* updateTextSaga() {
   }
 }
 
+function* visitSaga() {
+  while(true) {
+    yield take(`${visit}`)
+    sendData('visit')
+  }
+}
+
 function* saga() {
   yield fork(changeModeSaga)
   yield fork(nextModeSaga)
   yield fork(matchSaga)
   yield fork(updateSettingSaga)
   yield fork(updateTextSaga)
+  yield fork(visitSaga)
 }
 
 export default saga

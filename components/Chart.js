@@ -48,17 +48,10 @@ const Chart = ({users, deals, expanded, ex_data, dynamic_text}) => {
   var lower = tmp[1]
   var upper = tmp[2]
 
-  console.log(i + " " + lower + " " + upper)
-
   buyerBids.push(-1)
   buyerBids.push(Math.max.apply(null, buyerBids))
   sellerBids.push(Math.min.apply(null, sellerBids))
   sellerBids.push(ex? ex_data.price_base + usersCount * ex_data.price_inc : ex_data.price_max + 1)
-
-  console.log(b.join(','))
-  console.log(buyerBids.sort((a, b) => a - b).map((x, y, a) => '(' + [x, a.length - y - 1].join(',') + ')').join(','))
-  console.log(s.join(','))
-  console.log(sellerBids.sort((a, b) => a - b).map((x, y) => '(' + [x, y + 1].join(',') + ')').join(','))
 
   return (
     <Card initiallyExpanded={expanded}>

@@ -14,3 +14,5 @@ export const openParticipantPage = createAction('open participant page', id => i
 export const updateSetting = createAction('UPDATE_SETTING', data => data)
 
 export const updateText = createAction('UPDATE TEXT', dynamic_text => dynamic_text)
+
+export const visit = createAction('VISIT')
