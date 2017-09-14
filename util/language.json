@@ -92,6 +92,23 @@
     "demand": "需要",
     "supply": "供給",
     "price_change": "成立<price>の推移",
-    "success_order": "成立順"
+    "success_order": "成立順",
+    "file": [
+      "double_auction.csv",
+      "Double Auction",
+      "Date and time",
+      "The number of participants",
+      "ID",
+      "Role",
+      "Money",
+      "Bid",
+      "Deal",
+      "History",
+      "Status",
+      "Price",
+      "ID1",
+      "ID2",
+      "Time"
+    ]
   }
 }

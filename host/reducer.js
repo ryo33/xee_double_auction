@@ -27,5 +27,6 @@ const reducer = createReducer({
   price_max: 20,
   price_min: 10,
   dynamic_text: null,
+  hist: [],
 })
 export default reducer

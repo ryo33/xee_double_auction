@@ -27,7 +27,7 @@ import { ReadJSON } from '../util/ReadJSON'
 const pages = ["wait", "description", "auction", "result"]
 const ex_types = ["simple", "real"]
 
-const mapStateToProps = ({ mode, loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users, screenPage, ex_type, price_base, price_inc, price_max, price_min, dynamic_text, isFirstVisit }) => ({
+const mapStateToProps = ({ mode, loading, buyerBids, sellerBids, deals, highestBid, lowestBid, users, screenPage, ex_type, price_base, price_inc, price_max, price_min, dynamic_text, isFirstVisit, hist }) => ({
   mode,
   loading,
   buyerBids,
@@ -44,6 +44,7 @@ const mapStateToProps = ({ mode, loading, buyerBids, sellerBids, deals, highestB
   price_min,
   dynamic_text,
   isFirstVisit,
+  hist,
 })
 
 const { ESC } = Keys
@@ -84,6 +85,7 @@ class App extends Component {
 
   setting() {
     const { ex_type, price_base, price_inc, price_max, price_min  } = this.state
+
     var buttons = ex_types.map(type => <RaisedButton label={getExperimentType(type)} primary={ex_type == type} onTouchTap={this.handleExChange.bind(this, type)} />)
     return (
       <span>
@@ -262,25 +264,27 @@ class App extends Component {
   }
 
   handleDownload() {
-    const { users, deals } = this.props
-    const fileName = "double_auction.csv"
+    const { users, hist } = this.props
+    const fileName = ReadJSON().static_text["file"][0]
     const list = [
-      ["Double Auction"],
-      ["Date and time", new Date()],
-      ["The number of participants", Object.keys(users).length],
-      ["ID", "Role", "Money", "Bit", "Deal"],
+      [ReadJSON().static_text["file"][1]],
+      [ReadJSON().static_text["file"][2], new Date()],
+      [ReadJSON().static_text["file"][3], Object.keys(users).length],
+      [ReadJSON().static_text["file"][4], ReadJSON().static_text["file"][5], ReadJSON().static_text["file"][6], ReadJSON().static_text["file"][7],  ReadJSON().static_text["file"][8]],
       ...(Object.keys(users).map(id => {
         const user = users[id]
         return [id, user.role, user.money, user.bid, user.deal]
       })),
       [],
-      ["Deal", "ID1", "ID2", "time"],
-      ...(deals.map(deal => {
+      [ReadJSON().static_text["file"][9]],
+      [ReadJSON().static_text["file"][10],  ReadJSON().static_text["file"][11],  ReadJSON().static_text["file"][12],  ReadJSON().static_text["file"][13],  ReadJSON().static_text["file"][14]],
+      ...(hist.map(history => {
         return [
-          deal.deal,
-          deal.participant_id,
-          deal.participant_id2,
-          deal.time,
+          history.status,
+          history.price,
+          history.id1,
+          history.id2? history.id2 : '-',
+          history.time,
         ]
       }))
     ]

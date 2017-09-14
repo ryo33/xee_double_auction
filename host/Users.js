@@ -16,9 +16,9 @@ const User = ({ id, role, money, bid, bidded, dealt, deal, openParticipantPage, 
     <td>{money}</td>
     <td>{
       dealt
-        ? InsertVariable(ReadJSON().static_text["success"], { deal: deal }, dynamic_text)
+        ? InsertVariable(ReadJSON().static_text["success"], { deal: deal }, dynamic_text["variables"])
         : bidded
-          ? InsertVariable(ReadJSON().static_text["bid"], { bid: bid }, dynamic_text)
+          ? InsertVariable(ReadJSON().static_text["bid"], { bid: bid }, dynamic_text["variables"])
           : ReadJSON().static_text["yet"]
     }</td>
   </tr>

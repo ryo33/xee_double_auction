@@ -17,6 +17,7 @@ defmodule DoubleAuction.Host do
       price_min: true,
       dynamic_text: true,
       isFirstVisit: true,
+      hist: data.mode == "result",
     }
     data
     |> Transmap.transform(rule)
@@ -65,7 +66,7 @@ defmodule DoubleAuction.Host do
     end) |> elem(0) |> Enum.into(%{})
     %{data | participants: participants,
      buyer_bids: [], seller_bids: [], deals: [],
-     highest_bid: nil, lowest_bid: nil }
+     highest_bid: nil, lowest_bid: nil, hist: [] }
   end
 
   def fetch_contents(data) do

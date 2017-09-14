@@ -66,6 +66,7 @@ defmodule DoubleAuction.Participant do
           end)
         end
     end
+    IO.inspect data
     data
   end
 
@@ -95,9 +96,11 @@ defmodule DoubleAuction.Participant do
     else
       data[bid_key]
     end
+#    new_h = new_hist(id, bid, false, nil)
     data = %{data | key => bids, bid_key => most_bid}
     data
     |> Map.update!(:counter, fn x -> x + 1 end)
+    |> Map.put(:hist, data.hist ++ [new_hist(id, bid, "bid", nil, Timex.format!(Timex.now(), "{ISO:Extended}"))])
   end
 
   def new_bid(id, participant_id, bid) do
@@ -111,13 +114,14 @@ defmodule DoubleAuction.Participant do
   def deal(data, bid_key, partner_key, id, bid, set) do
     now = Timex.format!(Timex.now(), "{ISO:Extended}")
     id2 = data[bid_key].participant_id
+#    new = new_hist(id, bid, true, id2)
     deals = [new_deal(data.counter, bid, id, id2, now) | data.deals]
     bids = List.delete(data[partner_key], data[bid_key])
     data = %{data | :deals => deals, partner_key => bids}
            |> dealt(id, id2, data[bid_key].bid)
            |> Map.update!(:counter, fn x -> x + 1 end)
     data = set.(data)
-    data
+    data |> Map.put(:hist, data.hist ++ [new_hist(id, bid, "deal", id2, now)])
   end
 
   def new_deal(id, bid, participant_id, participant_id2, now) do
@@ -138,6 +142,10 @@ defmodule DoubleAuction.Participant do
     |> update_in([:participants, id2], fn participant ->
           %{participant | bidded: false, dealt: true, deal: money}
     end)
+  end
+
+  def new_hist(id1, bid, status, id2, now) do
+    %{ id1: id1, price: bid, status: status, id2: id2, time: now }
   end
 
   def set_highest_bid(%{buyer_bids: []} = data) do

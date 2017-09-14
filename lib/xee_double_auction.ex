@@ -35,7 +35,7 @@ defmodule DoubleAuction do
        user_number: 0,
        dynamic_text: nil,
        isFirstVisit: true,
-       history: [],
+       hist: [],
      }}}
   end
 
