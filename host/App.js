@@ -347,6 +347,7 @@ class App extends Component {
           settingButton={mode == "wait"}
           editButton={mode == "wait"}
           downloadButton={mode == "result"}
+          text={ReadJSON().static_text}
         >
           <div style={{ marginTop: "5%" }}>
             <Users />

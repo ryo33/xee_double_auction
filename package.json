@@ -26,7 +26,7 @@
     "redux-actions": "^0.10.0",
     "redux-logger": "^2.6.1",
     "redux-saga": "^0.10.4",
-    "xee-components": "^1.1.0"
+    "xee-components": "^1.2.2"
   },
   "devDependencies": {
     "babel-core": "^6.7.7",
