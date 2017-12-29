@@ -289,7 +289,16 @@ class App extends Component {
       }))
     ]
     const content = list.map(line => line.join(',')).join("\n")
-    download(fileName, 'text/csv;charset=utf-8', content)
+    let bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+    let blob = new Blob([bom, content])
+    let url = window.URL || window.webkitURL
+    let blobURL = url.createObjectURL(blob)
+
+    let a = document.createElement('a')
+    a.download = fileName
+    a.href = blobURL
+    a.click()
+ //   download(fileName, 'text/csv;charset=utf-8', content)
   }
 
   componentWillReceiveProps({ dispatch, keydown, mode: nextPage , isFirstVisit }) {
