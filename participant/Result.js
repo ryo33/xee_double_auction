@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import BidsTable from 'components/BidsTable'
-import Chart from 'components/Chart'
+import BidsTable from '../components/BidsTable'
+import Chart from '../components/Chart'
 
 const mapStateToProps = ({ buyerBids, sellerBids, deals, users, ex_type, price_base, price_inc, price_max, price_min, dynamic_text }) => ({
   buyerBids,

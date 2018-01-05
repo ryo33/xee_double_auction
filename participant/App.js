@@ -5,10 +5,10 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import {Card, CardText, CardTitle } from 'material-ui/Card'
 import CircularProgress from 'material-ui/CircularProgress';
 
-import Auction from 'participant/Auction'
-import Wait from 'participant/Wait'
-import Description from 'participant/Description'
-import Result from 'participant/Result'
+import Auction from './Auction'
+import Wait from './Wait'
+import Description from './Description'
+import Result from './Result'
 
 import { ReadJSON, LineBreak } from '../util/ReadJSON'
 

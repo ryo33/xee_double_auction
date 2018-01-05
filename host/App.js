@@ -12,14 +12,14 @@ import { Tabs, Tab } from 'material-ui/Tabs'
 import SwipeableViews from 'react-swipeable-views'
 
 import { HostPage } from 'xee-components'
-import Chart from 'components/Chart'
-import BidsTable from 'components/BidsTable'
+import Chart from '../components/Chart'
+import BidsTable from '../components/BidsTable'
 import Users from './Users'
 import ScreenPage from './ScreenPage'
 
 import { enableScreenPage } from './actions'
-import { getPage, getExperimentType } from 'util/index'
-import { submitMode } from 'host/actions'
+import { getPage, getExperimentType } from '../util/index'
+import { submitMode } from './actions'
 import { updateSetting, updateText, visit } from './actions'
 
 import { ReadJSON } from '../util/ReadJSON'

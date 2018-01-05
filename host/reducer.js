@@ -1,6 +1,6 @@
 import combineSectionReducers from 'combine-section-reducers'
 
-import {enableScreenMode, disableScreenMode} from 'host/actions'
+import {enableScreenMode, disableScreenMode} from './actions'
 
 import { createReducer } from 'redux-act'
 

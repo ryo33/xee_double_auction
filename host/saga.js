@@ -2,7 +2,7 @@ import { take, put, fork, select, call } from 'redux-saga/effects'
 
 import { submitMode, changeMode, match, nextMode, updateSetting, updateText, visit } from './actions'
 
-import { getMode } from 'util/index'
+import { getMode } from '../util/index'
 
 function* changeModeSaga() {
   while (true) {

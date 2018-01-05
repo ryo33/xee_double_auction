@@ -14,7 +14,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin()
 
-import { openParticipantPage } from 'host/actions'
+import { openParticipantPage } from '../host/actions'
 
 export default function startApp(component, reducer, saga, host=false) {
   const logger = createLogger()

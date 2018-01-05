@@ -4,8 +4,8 @@ import throttle from 'react-throttle-render'
 
 import { Card, CardHeader, CardText } from 'material-ui/Card'
 
-import { getRole } from 'util/index'
-import { openParticipantPage } from 'host/actions'
+import { getRole } from '../util/index'
+import { openParticipantPage } from './actions'
 
 import { ReadJSON, InsertVariable } from '../util/ReadJSON'
 

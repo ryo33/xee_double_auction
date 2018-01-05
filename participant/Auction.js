@@ -6,7 +6,7 @@ import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card'
 import Divider from 'material-ui/Divider'
 
 import DealDialog from './DealDialog'
-import BidsTable from 'components/BidsTable'
+import BidsTable from '../components/BidsTable'
 import BidForm from './BidForm'
 
 import { ReadJSON, LineBreak, InsertVariable } from '../util/ReadJSON'
