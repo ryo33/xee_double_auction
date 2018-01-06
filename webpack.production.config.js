@@ -1,7 +1,11 @@
-const path = require('path');
-const webpack = require('webpack');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const MinifyPlugin = require("babel-minify-webpack-plugin");
+var path = require('path');
+var reactDomLibPath = path.join(__dirname, "./node_modules/react-dom/lib");
+var alias = {};
+["EventPluginHub", "EventConstants", "EventPluginUtils", "EventPropagators",
+ "SyntheticUIEvent", "CSSPropertyOperations", "ViewportMetrics"].forEach(function(filename){
+    alias["react/lib/"+filename] = path.join(__dirname, "./node_modules/react-dom/lib", filename);
+});
+var webpack = require('webpack');
 
 module.exports = {
   entry: {
@@ -9,54 +13,56 @@ module.exports = {
     participant: ["babel-polyfill", "./participant/index.js"],
   },
   output: {
-    path: `${__dirname}/`,
+    path: "./",
     filename: "[name].js"
   },
   module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ["es2015", "react"]
-          },
-        }
-      }
-    ],
-    loaders: [
-      {
-        test: /\.json$/,
-        loader: 'json-loader'
-      }
-    ]
+    exprContextCritical: false,
+    loaders: [{
+      test: /\.jsx?$/,
+      exclude: /node_modules/,
+      loader: "babel-loader"
+    }]
   },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
+    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
       compress: {
-        warnings: false
-      }
+        warnings: false,
+        sequences: true,
+        properties:true,
+        dead_code: true,
+        conditionals: true,
+        comparisons: true,
+        booleans: true,
+        loops: true,
+        unused: true,
+        if_return: true,
+        join_vars: true,
+        cascade: true,
+        collapse_vars: true,
+        drop_console: true,
+        drop_debugger: true,
+      },
+      output: {comments: false}
     }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.AggressiveMergingPlugin(),
-    new MinifyPlugin(),
-    new webpack.ContextReplacementPlugin(/.*/, path.resolve(__dirname, 'node_modules', 'jsondiffpatch'), {
-      '../package.json': './package.json',
-      './formatters': './src/formatters/index.js',
-      './console': './src/formatters/console.js'
-    }),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.AggressiveMergingPlugin()
   ],
   resolve: {
-    modules: [
-      path.resolve(__dirname, 'node_modules'), 'node_modules',
+    root: [
+      path.resolve('./')
     ],
-    extensions: [".js", ".json", ".jsx", ".css"],
-    alias: {
-      root: path.resolve(__dirname, './'),
-    },
-  },
+    extensions: [
+      "", ".js"
+    ],
+    modulesDirectories: [
+      "node_modules",
+    ],
+    alias: alias
+  }
 };
