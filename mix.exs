@@ -38,6 +38,6 @@ defmodule DoubleAuction.Mixfile do
     [{:xeethemescript, "~> 0.3.0"},
      {:json_diff_ex, "~> 0.6.2"},
      {:transmap, "~> 0.4.0"},
-     {:timex, "~> 3.1.24"}]
+     {:timex, "~> 3.3.0"}]
   end
 end

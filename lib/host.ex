@@ -37,8 +37,8 @@ defmodule DoubleAuction.Host do
 
   def match(data) do
     participants = Enum.shuffle(data.participants) |> Enum.map_reduce(0, fn {id, participant}, acc ->
-      if rem(acc, 2) == 1 do
-        new_participant = %{
+      new_participant = if rem(acc, 2) == 1 do
+        %{
           role: "buyer",
           money: case data.ex_type do
             "simple" -> acc * data.price_inc + data.price_base
@@ -50,7 +50,7 @@ defmodule DoubleAuction.Host do
           deal: nil
         }
       else
-        new_participant = %{
+        %{
           role: "seller",
           money: case data.ex_type do
             "simple" -> acc * data.price_inc + data.price_base
