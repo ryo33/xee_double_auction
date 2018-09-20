@@ -86,7 +86,7 @@ class App extends Component {
   setting() {
     const { ex_type, price_base, price_inc, price_max, price_min  } = this.state
 
-    var buttons = ex_types.map(type => <RaisedButton label={getExperimentType(type)} primary={ex_type == type} onTouchTap={this.handleExChange.bind(this, type)} />)
+    var buttons = ex_types.map(type => <RaisedButton label={getExperimentType(type)} primary={ex_type == type} onClick={this.handleExChange.bind(this, type)} />)
     return (
       <span>
         {buttons} <br/>
@@ -335,7 +335,7 @@ class App extends Component {
           <ScreenPage />
           <RaisedButton
             label={ReadJSON().static_text["back_top"]}
-            onTouchTap={this.handleCloseScreenPage}
+            onClick={this.handleCloseScreenPage}
             style={{
               marginTop: "5%",
             }}
@@ -393,7 +393,7 @@ class App extends Component {
               <RaisedButton
                 label={ReadJSON().static_text["apply"]}
                 primary={true}
-                onTouchTap={this.handleCloseSetting.bind(this)}
+                onClick={this.handleCloseSetting.bind(this)}
                 disabled={this.state.disabled}
               />
             ]}
@@ -409,7 +409,7 @@ class App extends Component {
               <RaisedButton
                 label={ReadJSON().static_text["apply"]}
                 primary={true}
-                onTouchTap={this.handleCloseEdit.bind(this)}
+                onClick={this.handleCloseEdit.bind(this)}
               />
             ]}
             model={false}

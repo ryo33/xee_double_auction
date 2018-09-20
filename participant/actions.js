@@ -1,3 +1,3 @@
-import { createAction } from 'redux-actions'
+import { createAction } from 'redux-act'
 
 export const bid = createAction('BID', price => price)

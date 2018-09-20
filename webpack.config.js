@@ -1,39 +1,37 @@
 var path = require('path');
-var reactDomLibPath = path.join(__dirname, "./node_modules/react-dom/lib");
-var alias = {};
-["EventPluginHub", "EventConstants", "EventPluginUtils", "EventPropagators",
- "SyntheticUIEvent", "CSSPropertyOperations", "ViewportMetrics"].forEach(function(filename){
-    alias["react/lib/"+filename] = path.join(__dirname, "./node_modules/react-dom/lib", filename);
-});
+require("@babel/polyfill");
 
 module.exports = {
-  devtool: 'eval-source-map',
+  mode: "development",
+  cache: true,
   entry: {
-    host: ["babel-polyfill", "./host/index.js"],
-    participant: ["babel-polyfill", "./participant/index.js"],
+    host: ["@babel/polyfill", "./host/index"],
+    participant: ["@babel/polyfill", "./participant/index"],
   },
   output: {
-    path: "./",
-    filename: "[name].js"
+    path: path.resolve(__dirname, "./"),
+    filename: "[name].js",
+    publicPath: ""
   },
   module: {
-    exprContextCritical: false,
-    loaders: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loader: "babel-loader"
-    }]
+    rules: [
+        {
+          test: /\.js$/,
+          exclude: /(node_modules|bower_components)/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ["@babel/preset-env", "@babel/preset-react"]
+          }
+        },
+      }
+    ]
   },
   resolve: {
-    root: [
-      path.resolve('./')
-    ],
-    extensions: [
-      "", ".js"
-    ],
-    modulesDirectories: [
-      "node_modules",
-    ],
-    alias: alias
+     extensions: ['.js', '.jsx'],
+  },
+  performance: {
+    maxAssetSize: 2000000,
+    maxEntrypointSize: 2000000
   }
 };

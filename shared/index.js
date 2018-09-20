@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
-import createLogger from 'redux-logger'
+import { createLogger } from 'redux-logger'
 import createSagaMiddleware from 'redux-saga'
 import { createAction, createReducer } from 'redux-act'
 import reduceReducers from 'reduce-reducers'
@@ -10,9 +10,6 @@ import { create as createJsondiffpatch } from 'jsondiffpatch'
 import clone from 'clone'
 import { fork, take, call } from 'redux-saga/effects'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-
-import injectTapEventPlugin from 'react-tap-event-plugin'
-injectTapEventPlugin()
 
 import { openParticipantPage } from '../host/actions'
 
